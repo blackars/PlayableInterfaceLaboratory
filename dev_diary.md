@@ -187,24 +187,42 @@ Each module gets tags displayed as small badges inside its card.
 - [x] 600ms initial delay before typing starts for page load
 - [x] `min-height: 5.5em` prevents layout shift during typing
 
----
+### Phase 7: Performance — Iframe on-Hover + Event Delegation
+- [x] Replaced live iframes with CSS-only abstract placeholders (title + gradient pattern)
+- [x] Added `IntersectionObserver` (`rootMargin: 300px`) to mark cards near viewport
+- [x] Iframe created only on `mouseenter` when `data-near="true"` — 0 iframes on initial load
+- [x] Iframe persists once created (not destroyed on mouseleave)
+- [x] Placeholder removed on iframe `load` event
+- [x] `.preview` starts `opacity: 0`, fades in on `.game-card:hover` (0.4s ease)
+- [x] `mix-blend-mode: screen` on `.preview-shell::after` moved to hover-only (was always-on)
+- [x] Replaced 57 individual event listeners with 2 delegated (grid + filters)
+- [x] Removed dead code: `drawPlaceholders()`, resize handler, canvas data-placeholder
+- [x] Removed `setFilter()` function — logic merged into delegated filter listener
 
 ## Post-MVP Roadmap (Future Phases)
 
 1. **Search + Filter** (Fuse.js, chip filters)
-2. **Placeholder previews** (generative canvas thumbnails)
-3. **i18n** (ES/EN selector)
-4. **Performance** (lazy-load iframes, prefetch)
-5. **Systemic design tokens**
-6. **manifest.json per experience**
-7. **Game lifecycle API** (postMessage)
-8. **PWA + Capacitor** mobile
-9. **Backend** (Supabase: auth, progress, favorites)
-10. **Leaderboard + achievements**
+2. **i18n** (ES/EN selector)
+3. **Systemic design tokens**
+4. **manifest.json per experience**
+5. **Game lifecycle API** (postMessage)
+6. **PWA + Capacitor** mobile
+7. **Backend** (Supabase: auth, progress, favorites)
+8. **Leaderboard + achievements**
 
 ---
 
 ## Changelog
+
+### 2026-07-22 (v3) — Performance Optimization: Iframe on-Hover
+- Replaced 26 live iframes with CSS-only abstract placeholders (0 iframes on load)
+- Added `IntersectionObserver` (`rootMargin: 300px`) for viewport-aware iframe creation
+- Iframes created only on `mouseenter` when card is near viewport
+- `.preview` starts hidden (`opacity: 0`), fades in on hover (0.4s ease)
+- `mix-blend-mode: screen` moved to hover-only (was always-on, 26 compositing layers eliminated)
+- Replaced 57 individual event listeners with 2 delegated (grid + filters)
+- Removed dead code: `drawPlaceholders()`, resize handler, canvas data-placeholder, `setFilter()`
+- Net result: ~100KB+ less initial load, ~390 fewer DOM nodes, 0 compositing layers at rest
 
 ### 2026-07-22 (v2) — Typewriter Effect on Hero Description
 - Replaced hero description font with monospace console style

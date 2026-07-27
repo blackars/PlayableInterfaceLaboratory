@@ -284,11 +284,6 @@
 
     .game-card:hover::before { opacity: 1; }
 
-    .game-card:hover .preview {
-      filter: grayscale(0) contrast(1.2) brightness(1);
-      transform: scale(1.025);
-    }
-
     .game-card:hover .open-label {
       opacity: 1;
       transform: translateY(0);
@@ -314,10 +309,17 @@
       transform: scale(1.001);
       transform-origin: center;
       pointer-events: none;
+      opacity: 0;
       transition:
         filter var(--transition),
         transform var(--transition),
-        opacity var(--transition);
+        opacity 0.4s ease;
+    }
+
+    .game-card:hover .preview {
+      opacity: 1;
+      filter: grayscale(0) contrast(1.2) brightness(1);
+      transform: scale(1.025);
     }
 
     .preview-shell::after {
@@ -328,6 +330,11 @@
       background:
         linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.72) 100%),
         repeating-linear-gradient(0deg, rgba(255,255,255,0.035) 0, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 4px);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .game-card:hover .preview-shell::after {
       mix-blend-mode: screen;
       opacity: 0.5;
     }
@@ -337,26 +344,22 @@
       inset: 0;
       display: grid;
       place-items: center;
-      color: rgba(255,255,255,0.42);
-      font-size: 0.75rem;
+      color: rgba(255,255,255,0.35);
+      font-size: 0.7rem;
+      font-family: "SF Mono", "Cascadia Code", "Fira Code", Consolas, "Courier New", monospace;
       letter-spacing: 0.16em;
       text-transform: uppercase;
       background:
-        radial-gradient(circle at center, rgba(255,255,255,0.09), transparent 26%),
-        linear-gradient(135deg, #000, #111 48%, #000);
-    }
-
-    .placeholder-preview canvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0.72;
+        radial-gradient(circle at 30% 40%, rgba(255,255,255,0.06), transparent 50%),
+        repeating-linear-gradient(135deg, rgba(255,255,255,0.02) 0, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 18px),
+        linear-gradient(135deg, #000, #0a0a0a 48%, #000);
     }
 
     .placeholder-preview span {
       position: relative;
       z-index: 2;
+      padding: 8px 14px;
+      border: 1px solid rgba(255,255,255,0.1);
     }
 
     .game-info {
@@ -710,7 +713,6 @@
       allBtn.className = "filter-btn active";
       allBtn.textContent = "All";
       allBtn.dataset.filter = "all";
-      allBtn.addEventListener("click", () => setFilter(null));
       filtersEl.appendChild(allBtn);
 
       ALL_TAGS.forEach(tag => {
@@ -718,25 +720,8 @@
         btn.className = "filter-btn";
         btn.textContent = tag;
         btn.dataset.filter = tag;
-        btn.addEventListener("click", () => setFilter(tag));
         filtersEl.appendChild(btn);
       });
-    }
-
-    function setFilter(tag) {
-      activeFilter = tag;
-      document.querySelectorAll(".filter-btn").forEach(btn => {
-        btn.classList.toggle("active", tag === null ? btn.dataset.filter === "all" : btn.dataset.filter === tag);
-      });
-      document.querySelectorAll(".game-card").forEach(card => {
-        if (!tag) {
-          card.classList.remove("hidden");
-        } else {
-          const cardTags = card.dataset.tags.split(",");
-          card.classList.toggle("hidden", !cardTags.includes(tag));
-        }
-      });
-      updateCount();
     }
 
     function createCard(mod, index) {
@@ -746,8 +731,8 @@
       card.setAttribute("role", "button");
       card.setAttribute("aria-label", `Open ${mod.title} in a new tab`);
       card.dataset.tags = mod.tags.join(",");
-
-      const hasRoute = Boolean(mod.route);
+      card.dataset.route = mod.route || "";
+      card.dataset.index = index;
 
       const tagsHTML = mod.tags.map(t => `<span class="tag" data-tag="${t}">${t}</span>`).join("");
 
@@ -755,10 +740,7 @@
         <span class="open-label">Open fullscreen</span>
 
         <div class="preview-shell">
-          ${hasRoute
-            ? `<iframe class="preview" src="${mod.route}" loading="lazy" title="Preview of ${mod.title}" tabindex="-1" scrolling="no"></iframe>`
-            : `<div class="placeholder-preview"><canvas data-placeholder="${index}"></canvas><span>Connect route</span></div>`
-          }
+          <div class="placeholder-preview"><span>${mod.title}</span></div>
         </div>
 
         <div class="game-info">
@@ -777,14 +759,6 @@
           <div class="tags">${tagsHTML}</div>
         </div>
       `;
-
-      card.addEventListener("click", () => openModule(mod.route));
-      card.addEventListener("keydown", event => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          openModule(mod.route);
-        }
-      });
 
       return card;
     }
@@ -813,61 +787,93 @@
       }
     }
 
+    function insertIframe(card) {
+      if (card.querySelector("iframe")) return;
+      const route = card.dataset.route;
+      if (!route) return;
+
+      const shell = card.querySelector(".preview-shell");
+      const placeholder = shell.querySelector(".placeholder-preview");
+
+      const iframe = document.createElement("iframe");
+      iframe.className = "preview";
+      iframe.src = route;
+      iframe.title = `Preview of ${card.querySelector(".game-title").textContent}`;
+      iframe.tabIndex = -1;
+      iframe.scrolling = "no";
+
+      shell.appendChild(iframe);
+
+      iframe.addEventListener("load", () => {
+        if (placeholder) placeholder.remove();
+      }, { once: true });
+    }
+
     function render() {
       const fragment = document.createDocumentFragment();
       MODULES.forEach((mod, i) => fragment.appendChild(createCard(mod, i)));
       grid.appendChild(fragment);
-      requestAnimationFrame(drawPlaceholders);
-    }
 
-    function drawPlaceholders() {
-      document.querySelectorAll("canvas[data-placeholder]").forEach(canvas => {
-        const rect = canvas.getBoundingClientRect();
-        const dpr = window.devicePixelRatio || 1;
-        canvas.width = rect.width * dpr;
-        canvas.height = rect.height * dpr;
-        const ctx = canvas.getContext("2d");
-        ctx.scale(dpr, dpr);
-        const w = rect.width;
-        const h = rect.height;
-        const idx = Number(canvas.dataset.placeholder);
-
-        ctx.clearRect(0, 0, w, h);
-        ctx.fillStyle = "#000";
-        ctx.fillRect(0, 0, w, h);
-
-        ctx.strokeStyle = "rgba(255,255,255,0.18)";
-        ctx.lineWidth = 1;
-        const step = 22 + idx * 2;
-        for (let x = -w; x < w * 2; x += step) {
-          ctx.beginPath();
-          ctx.moveTo(x, 0);
-          ctx.lineTo(x + w * 0.45, h);
-          ctx.stroke();
+      const observer = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.dataset.near = "true";
+          }
         }
+      }, { rootMargin: "300px" });
 
-        ctx.strokeStyle = "rgba(255,255,255,0.38)";
-        ctx.strokeRect(w * 0.18, h * 0.2, w * 0.64, h * 0.58);
-
-        ctx.beginPath();
-        ctx.arc(w * 0.5, h * 0.49, Math.min(w, h) * 0.13, 0, Math.PI * 2);
-        ctx.stroke();
-
-        ctx.fillStyle = "rgba(255,255,255,0.86)";
-        ctx.font = "10px monospace";
-        ctx.textAlign = "center";
-        ctx.fillText(`MOD_${String(idx + 1).padStart(2, "0")}`, w / 2, h * 0.72);
-      });
+      grid.querySelectorAll(".game-card").forEach(card => observer.observe(card));
     }
-
-    window.addEventListener("resize", () => {
-      clearTimeout(window.__placeholderResize);
-      window.__placeholderResize = setTimeout(drawPlaceholders, 120);
-    });
 
     createFilters();
     render();
     updateCount();
+
+    // ── Event Delegation ──
+    grid.addEventListener("mouseenter", (e) => {
+      const card = e.target.closest(".game-card");
+      if (!card) return;
+      if (card.dataset.near === "true") insertIframe(card);
+      AudioEngine.playHover();
+    }, true);
+
+    grid.addEventListener("click", (e) => {
+      const card = e.target.closest(".game-card");
+      if (!card) return;
+      AudioEngine.playOpen();
+      openModule(card.dataset.route);
+    });
+
+    grid.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      const card = e.target.closest(".game-card");
+      if (!card) return;
+      e.preventDefault();
+      openModule(card.dataset.route);
+    });
+
+    filtersEl.addEventListener("click", (e) => {
+      const btn = e.target.closest(".filter-btn");
+      if (!btn) return;
+      AudioEngine.playFilterClick();
+
+      const filter = btn.dataset.filter === "all" ? null : btn.dataset.filter;
+      activeFilter = filter;
+
+      filtersEl.querySelectorAll(".filter-btn").forEach(b => {
+        b.classList.toggle("active", filter === null ? b.dataset.filter === "all" : b.dataset.filter === filter);
+      });
+
+      grid.querySelectorAll(".game-card").forEach(card => {
+        if (!filter) {
+          card.classList.remove("hidden");
+        } else {
+          card.classList.toggle("hidden", !card.dataset.tags.split(",").includes(filter));
+        }
+      });
+
+      updateCount();
+    });
 
     // ── Typewriter ──
     const TYPEWRITER_TEXT = 'This project is a <strong>Micro Arcade Laboratory</strong>, a living archive of minigames, prototypes, and interactive surfaces exploring the web as a playable medium. By pushing the boundaries of UI experimentation, it rewrites the rules of traditional UX. The project uses minimal visual systems and serial artistic production as core tools for radical conceptual experimentation.';
@@ -1045,17 +1051,6 @@
       e.stopPropagation();
       AudioEngine.init();
       AudioEngine.toggleMute();
-    });
-
-    // Sound effects on cards
-    document.querySelectorAll(".game-card").forEach(card => {
-      card.addEventListener("mouseenter", () => AudioEngine.playHover());
-      card.addEventListener("click", () => AudioEngine.playOpen());
-    });
-
-    // Sound effects on filter buttons
-    document.querySelectorAll(".filter-btn").forEach(btn => {
-      btn.addEventListener("click", () => AudioEngine.playFilterClick());
     });
   </script>
 </body>
