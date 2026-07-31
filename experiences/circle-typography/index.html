@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -74,7 +74,7 @@
 
   // Interactividad mouse (suave)
   const MOUSE_RADIUS = 140;    // radio de influencia local
-  const MOUSE_FORCE = 0.18;    // fuerza de repulsión local
+  const MOUSE_FORCE = 0.18;    // local repulsion force
   const PARALLAX_X = 16;       // desplazamiento global X
   const PARALLAX_Y = 12;       // desplazamiento global Y
   const MOUSE_LERP = 0.12;     // suavizado del puntero
@@ -162,18 +162,18 @@
     for(const p of points){
       const pr = project(p, angle);
 
-      // afinidad a clúster activo
+      // affinity to active cluster
       let rel = 0;
       for(const c of act){
         const d = dist3(p,c);
         rel = Math.max(rel, clamp(1 - d/0.55, 0, 1));
       }
 
-      // posición final base con parallax
+      // base final position with parallax
       let fx = pr.x + parallaxX * pr.k;
       let fy = pr.y + parallaxY * pr.k;
 
-      // repulsión local alrededor del cursor
+      // local repulsion around cursor
       if(mouse.inside){
         const dx = fx - mouse.x;
         const dy = fy - mouse.y;
@@ -183,7 +183,7 @@
         if(d2 < r2){
           const d = Math.sqrt(d2) || 0.0001;
           const t = 1 - d / MOUSE_RADIUS; // 0..1
-          // empuje suave, más fuerte cerca del cursor
+          // soft push, stronger near cursor
           const push = (t*t) * MOUSE_FORCE * (10 + 18*pr.k);
           fx += (dx / d) * push;
           fy += (dy / d) * push;
@@ -290,7 +290,7 @@
     requestAnimationFrame(loop);
   }
 
-  // Mouse tracking para parallax/repulsión
+  // Mouse tracking for parallax/repulsion
   wrap.addEventListener("mousemove", (e) => {
     const r = wrap.getBoundingClientRect();
     mouse.tx = e.clientX - r.left;

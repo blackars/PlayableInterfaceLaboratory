@@ -1,5 +1,5 @@
-<!doctype html>
-<html lang="es">
+﻿<!doctype html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
@@ -77,16 +77,16 @@
 
 <div class="centerMsg" id="startMsg">
   <h1>Gravity Dots</h1>
-  <p>Mueve el núcleo con mouse/touch</p>
-  <p>Click / Tap = invertir gravedad</p>
-  <p>Captura partículas claras, evita oscuras</p>
-  <p style="margin-top:10px; color:#f2f2f2;">Pulsa para empezar</p>
+  <p>Move the core with mouse/touch</p>
+  <p>Click / Tap = invert gravity</p>
+  <p>Catch light particles, avoid dark ones</p>
+  <p style="margin-top:10px; color:#f2f2f2;">Click to start</p>
 </div>
 <div class="centerMsg" id="endMsg" style="display:none;">
-  <h1>Fin de ciclo</h1>
+  <h1>Game Over</h1>
   <p id="finalScore">Score 0</p>
-  <p id="finalCombo">Mejor combo x1</p>
-  <p style="margin-top:10px; color:#f2f2f2;">Pulsa para reiniciar</p>
+  <p id="finalCombo">Best combo x1</p>
+  <p style="margin-top:10px; color:#f2f2f2;">Click to restart</p>
 </div>
 <div class="hint">hiperminimal / 45–60s arcade loop</div>
 
@@ -129,7 +129,7 @@
     stars:[]
   };
 
-  // fondo partículas sutiles
+  // subtle background particles
   function initStars(){
     state.stars = [];
     const n = Math.floor((W*H)/18000);
@@ -204,7 +204,7 @@
   function endGame(){
     state.running=false; state.ended=true;
     finalScoreEl.textContent = `Score ${Math.floor(state.score)}`;
-    finalComboEl.textContent = `Mejor combo x${state.bestCombo}`;
+    finalComboEl.textContent = `Best combo x${state.bestCombo}`;
     endMsg.style.display='block';
   }
 
@@ -232,7 +232,7 @@
   window.addEventListener('mousedown', primaryAction);
   window.addEventListener('touchstart', (e)=>{ e.preventDefault(); primaryAction(); }, {passive:false});
 
-  // danger zones (anillos oscuros dinámicos)
+  // danger zones (dynamic dark rings)
   function dangerAt(x,y,t){
     const cx = W*0.5 + Math.sin(t*0.4)*W*0.12;
     const cy = H*0.5 + Math.cos(t*0.33)*H*0.1;
@@ -246,7 +246,7 @@
     const dt = Math.min(0.033, (now-last)/1000); last = now;
     requestAnimationFrame(loop);
 
-    // suavizado núcleo
+    // core smoothing
     state.core.x = lerp(state.core.x, state.target.x, 0.17);
     state.core.y = lerp(state.core.y, state.target.y, 0.17);
     state.core.x = clamp(state.core.x, 12, W-12);
@@ -263,7 +263,7 @@
         spawnParticle(Math.random()<0.68 ? 'light' : 'dark');
       }
 
-      // actualizar partículas
+      // update particles
       for(const p of particles){
         if(p.dead) continue;
         p.life += dt;
@@ -277,7 +277,7 @@
         const ax = (dx/d) * (G/d2);
         const ay = (dy/d) * (G/d2);
 
-        // ligera torsión orbital
+        // slight orbital twist
         const tx = -dy/d, ty = dx/d;
         const swirl = 22/(d+30);
         p.vx += (ax + tx*swirl)*dt;
@@ -286,7 +286,7 @@
         p.x += p.vx*dt*60;
         p.y += p.vy*dt*60;
 
-        // tiempo en órbita estable
+        // stable orbit time
         if(d>ORBIT_BAND_MIN && d<ORBIT_BAND_MAX && Math.abs((p.vx*dx+p.vy*dy)/(d+1))<18){
           p.orbitTime += dt;
           if(p.orbitTime>0.75){
@@ -299,7 +299,7 @@
           p.orbitTime = Math.max(0, p.orbitTime - dt*0.8);
         }
 
-        // captura / colisión
+        // capture / collision
         if(d < state.core.r + p.r + 1.5){
           if(p.type==='light'){
             state.score += 12 * state.combo;
@@ -314,7 +314,7 @@
           continue;
         }
 
-        // zonas peligrosas (si toca el núcleo)
+        // danger zones (if touching the core)
         if(dangerAt(state.core.x,state.core.y,now*0.001)){
           state.score = Math.max(0, state.score - 30*dt);
           state.combo = 1;
@@ -324,7 +324,7 @@
         if(p.x < -80 || p.x > W+80 || p.y < -80 || p.y > H+80) p.dead = true;
       }
 
-      // limpieza y mínimo de partículas
+      // cleanup and minimum particles
       for(let i=particles.length-1;i>=0;i--) if(particles[i].dead) particles.splice(i,1);
       while(particles.length<10) spawnParticle(Math.random()<0.66?'light':'dark');
 
@@ -339,7 +339,7 @@
     ctx.setTransform(DPR,0,0,DPR,shakeX,shakeY);
 
     ctx.clearRect(-20,-20,W+40,H+40);
-    // viñeta
+    // vignette
     const g = ctx.createRadialGradient(W*0.5,H*0.5,20,W*0.5,H*0.5,diag*0.55);
     g.addColorStop(0,'rgba(15,15,15,0.12)');
     g.addColorStop(1,'rgba(0,0,0,0.6)');
@@ -360,7 +360,7 @@
     ctx.lineWidth = 14;
     ctx.beginPath(); ctx.arc(cx,cy,rr,0,Math.PI*2); ctx.stroke();
 
-    // partículas
+    // particles
     for(const p of particles){
       const glow = p.type==='light' ? 0.22 : 0.12;
       ctx.beginPath(); ctx.arc(p.x,p.y,p.r*2.8,0,Math.PI*2);
@@ -372,7 +372,7 @@
       ctx.fill();
     }
 
-    // núcleo
+    // core
     const pr = state.core.r + state.pulse*8;
     ctx.beginPath(); ctx.arc(state.core.x,state.core.y,pr*2.8,0,Math.PI*2);
     ctx.fillStyle = `rgba(235,235,235,${0.08 + state.pulse*0.16})`;

@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="es">
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -77,7 +77,7 @@
       display:grid;place-items:center;
     }
 
-    /* Grid en forma de # (solo 4 líneas, sin cajas) */
+    /* Hash-shaped grid (only 4 lines, no boxes) */
     .hash-grid{
       position:absolute;inset:0;
       pointer-events:none;
@@ -210,14 +210,14 @@
     <header class="top">
       <div class="title">
         <div class="eyebrow">Tri-Line v2 · Cinema</div>
-        <h1>3 en línea</h1>
+        <h1>Tri-Line</h1>
       </div>
       <div class="meta">
-        <span>IA opcional</span>
+        <span>Optional AI</span>
         <span>·</span>
-        <span>3 tonos</span>
+        <span>3 tones</span>
         <span>·</span>
-        <span>modo cinema</span>
+        <span>cinema mode</span>
       </div>
     </header>
 
@@ -235,16 +235,16 @@
 
     <footer class="bottom">
       <div class="status">
-        <div><span>Turno:</span> <b id="turnLabel">Círculo</b></div>
-        <div><span>Ronda:</span> <b id="roundLabel">1/5</b></div>
-        <div><span>Estado:</span> <b id="stateLabel">Jugando</b></div>
-        <div><span>Modo:</span> <b id="modeLabel">Humano vs Humano</b></div>
+        <div><span>Turn:</span> <b id="turnLabel">Circle</b></div>
+        <div><span>Round:</span> <b id="roundLabel">1/5</b></div>
+        <div><span>State:</span> <b id="stateLabel">Playing</b></div>
+        <div><span>Mode:</span> <b id="modeLabel">Human vs Human</b></div>
       </div>
 
       <div class="score">
-        <div>Círculo<b id="scoreO">0</b></div>
-        <div>Cuadrado<b id="scoreS">0</b></div>
-        <div>Empates<b id="scoreD">0</b></div>
+        <div>Circle<b id="scoreO">0</b></div>
+        <div>Square<b id="scoreS">0</b></div>
+        <div>Draws<b id="scoreD">0</b></div>
       </div>
 
       <div class="controls">
@@ -252,12 +252,12 @@
         <button id="cinemaBtn" class="active">Cinema: On</button>
         <button id="soundBtn" class="active">Sound: On</button>
         <select id="botSide">
-          <option value="S">Bot = Cuadrado</option>
-          <option value="O">Bot = Círculo</option>
+          <option value="S">Bot = Square</option>
+          <option value="O">Bot = Circle</option>
         </select>
-        <button id="nextBtn">Siguiente ronda</button>
-        <button id="resetRoundBtn">Reiniciar ronda</button>
-        <button id="resetMatchBtn">Reiniciar match</button>
+        <button id="nextBtn">Next Round</button>
+        <button id="resetRoundBtn">Reset Round</button>
+        <button id="resetMatchBtn">Reset Match</button>
       </div>
     </footer>
   </div>
@@ -308,7 +308,7 @@
         sound:true
       };
 
-      // ---------- Audio (3 tonos) ----------
+      // ---------- Audio (3 tones) ----------
       let actx = null;
       function ensureAudio(){
         if(!st.sound) return null;
@@ -344,7 +344,7 @@
       const sleep = ms => new Promise(r=>setTimeout(r,ms));
       const rnd = arr => arr[(Math.random()*arr.length)|0];
 
-      function labelOf(p){ return p==='O' ? 'Círculo' : 'Cuadrado'; }
+      function labelOf(p){ return p==='O' ? 'Circle' : 'Square'; }
       function opposite(p){ return p==='O' ? 'S' : 'O'; }
 
       function checkResult(board=st.board){
@@ -383,8 +383,8 @@
 
         turnLabel.textContent = labelOf(st.turn);
         roundLabel.textContent = `${st.round}/${st.maxRounds}`;
-        if(!st.roundFinished) stateLabel.textContent = 'Jugando';
-        modeLabel.textContent = st.vsBot ? `Humano vs Bot (${labelOf(st.botSide)})` : 'Humano vs Humano';
+        if(!st.roundFinished) stateLabel.textContent = 'Playing';
+        modeLabel.textContent = st.vsBot ? `Human vs Bot (${labelOf(st.botSide)})` : 'Human vs Human';
 
         scoreOEl.textContent = st.score.O;
         scoreSEl.textContent = st.score.S;
@@ -491,7 +491,7 @@
           st.roundFinished = true;
           st.score[res.winner]++;
           drawWinLine(res.pattern);
-          stateLabel.textContent = `Gana ${labelOf(res.winner)}`;
+          stateLabel.textContent = `${labelOf(res.winner)} Wins`;
           sfx.win();
           render();
           await autoNext();
@@ -501,7 +501,7 @@
           st.locked = true;
           st.roundFinished = true;
           st.score.D++;
-          stateLabel.textContent = 'Empate';
+          stateLabel.textContent = 'Draw';
           sfx.draw();
           render();
           await autoNext();
@@ -513,13 +513,13 @@
       async function autoNext(){
         const needed = 3;
         if(st.score.O>=needed || st.score.S>=needed){
-          stateLabel.textContent = `Match: ${st.score.O>st.score.S?'Círculo':'Cuadrado'}`;
+          stateLabel.textContent = `Match: ${st.score.O>st.score.S?'Circle':'Square'}`;
           render();
           return;
         }
         if(st.round>=st.maxRounds){
-          if(st.score.O===st.score.S) stateLabel.textContent='Match empatado';
-          else stateLabel.textContent=`Match: ${st.score.O>st.score.S?'Círculo':'Cuadrado'}`;
+          if(st.score.O===st.score.S) stateLabel.textContent='Match Draw';
+          else stateLabel.textContent=`Match: ${st.score.O>st.score.S?'Circle':'Square'}`;
           render();
           return;
         }
@@ -533,7 +533,7 @@
         st.roundFinished = false;
         st.locked = false;
         st.turn = st.round % 2 ? 'O':'S';
-        stateLabel.textContent = 'Jugando';
+        stateLabel.textContent = 'Playing';
         if(!keepScore){
           st.score={O:0,S:0,D:0};
           st.round=1;

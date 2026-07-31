@@ -1,5 +1,5 @@
-<!doctype html>
-<html lang="es">
+﻿<!doctype html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -259,7 +259,7 @@ SCORE: 0000
           rings.push({
             z,
             baseR: 26 + i * 6.2,
-            type: i % 6, // alterna geometrías
+            type: i % 6, // alternates geometries
             rot: Math.random() * Math.PI * 2,
             wobble: 0.3 + Math.random() * 1.2,
             word: words[i % words.length],
@@ -303,7 +303,7 @@ SCORE: 0000
         const alpha = clamp(0.1 + p * 1.2, 0, .95);
         const lw = clamp(0.6 + p * 2.2, .6, 2.6);
 
-        // color monocromo dinámico
+        // dynamic monochrome color
         const toneBase = sectionTone(sec);
         const l = Math.floor(toneBase + p * 72);
         ctx.strokeStyle = `rgba(${l},${l},${l},${alpha})`;
@@ -314,7 +314,7 @@ SCORE: 0000
         ctx.rotate(ang + localSpin * 0.2);
 
         switch(r.type){
-          case 0: // círculo
+          case 0: // circle
             ctx.beginPath();
             ctx.arc(0,0,radius,0,Math.PI*2);
             ctx.stroke();
@@ -341,7 +341,7 @@ SCORE: 0000
             break;
         }
 
-        // texto señalización cada ciertos anillos
+        // signage text every few rings
         if ((Math.floor(r.z * tunnelDepth) % 10 === 0) && p > 0.17){
           drawCircularText(r.word, radius * 1.05, alpha * 0.9, p);
         }
@@ -391,7 +391,7 @@ SCORE: 0000
         state.scrollNorm = lerp(state.scrollNorm, state.targetNorm, 0.12);
         state.spin = lerp(state.spin, (state.scrollNorm * Math.PI * 4.5), 0.08);
 
-        // fondo por sección
+        // background per section
         const sec = getSection(state.scrollNorm);
         const tone = sectionTone(sec);
         ctx.fillStyle = `rgb(${tone},${tone},${tone})`;
@@ -404,15 +404,15 @@ SCORE: 0000
         ctx.fillStyle = g;
         ctx.fillRect(0,0,w,h);
 
-        // viaje: multiplica para sensación infinita
+        // journey: multiplies for infinite feel
         const travel = state.scrollNorm * 22.0;
 
-        // dibujo túnel back-to-front
+        // dibujo tunnel back-to-front
         for(let i=rings.length-1; i>=0; i--){
           drawRing(rings[i], travel, sec, state.spin);
         }
 
-        // obstáculo mini-juego (alineación)
+        // mini-game obstacle (alignment)
         const obstacleA = state.t * 0.8 + travel * 1.35;
         const obstacleR = Math.min(w,h) * 0.17;
         const ox = cx + Math.cos(obstacleA) * obstacleR;
@@ -424,14 +424,14 @@ SCORE: 0000
         ctx.arc(ox, oy, 12, 0, Math.PI*2);
         ctx.stroke();
 
-        // retícula fina
+        // thin grid
         ctx.strokeStyle = "rgba(255,255,255,0.06)";
         ctx.beginPath();
         ctx.moveTo(cx,0); ctx.lineTo(cx,h);
         ctx.moveTo(0,cy); ctx.lineTo(w,cy);
         ctx.stroke();
 
-        // mini-juego: mantener mouse cerca del centro
+        // mini-game: keep mouse near the center
         const dx = state.mouseX - cx;
         const dy = state.mouseY - cy;
         const distCenter = Math.hypot(dx,dy);

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -56,7 +56,7 @@
   const NS = "http://www.w3.org/2000/svg";
   const XLINK = "http://www.w3.org/1999/xlink";
 
-  // -------- Texto largo (3 párrafos) --------
+  // -------- Long text (3 paragraphs) --------
   const LOREM = [
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.",
     "Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. Ut in risus volutpat libero pharetra tempor.",
@@ -73,12 +73,12 @@
   const MIN_FONT = 2.2;
   const FLOW_SPEED = 0.008; // lenta
 
-  // Fase 1: entra en línea
+  // Phase 1: enters in line
   const ENTRY_SECONDS = 4.0;
-  // Fase 2: línea -> espiral
+  // Phase 2: line -> spiral
   const MORPH_SECONDS = 5.0;
 
-  // partículas
+  // particles
   const P_COUNT = 1200;
   const P_ORBIT_R = 130;
   const P_ROT = 0.0011;
@@ -119,7 +119,7 @@
   }
 
   function buildLinePath(){
-    // línea horizontal larga que cruza viewport
+    // long horizontal line crossing the viewport
     const x1 = -w*1.4, x2 = w*1.4;
     const y = 0;
     return `M ${x1} ${y} L ${x2} ${y}`;
@@ -178,16 +178,16 @@
     svg.appendChild(textNode);
   }
 
-  // interpolación line path -> spiral path (mismo # de segmentos)
+  // line path -> spiral path interpolation (same # of segments)
   function mixedPath(m){
-    // m=0 línea, m=1 espiral
+    // m=0 line, m=1 spiral
     let d = "";
     const x1 = -w*1.4, x2 = w*1.4, y0 = 0;
 
     for(let i=0;i<=SEGMENTS;i++){
       const u = i/SEGMENTS;
 
-      // punto en línea
+      // point on line
       const xl = lerp(x1,x2,u);
       const yl = y0;
 
@@ -228,23 +228,23 @@
     t += dt;
 
     // Fases
-    const entryT = clamp(t / ENTRY_SECONDS, 0, 1); // línea entrando desde izquierda
-    const morphT = clamp((t - ENTRY_SECONDS) / MORPH_SECONDS, 0, 1); // línea->espiral
+    const entryT = clamp(t / ENTRY_SECONDS, 0, 1); // line entering from the left
+    const morphT = clamp((t - ENTRY_SECONDS) / MORPH_SECONDS, 0, 1); // line->spiral
     const m = easeInOut(morphT);
 
-    // 1) mover toda la línea desde izquierda hasta centro (solo en entry)
+    // 1) move the whole line from left to center (entry only)
     const startX = -w*1.1;
     const tx = lerp(startX, 0, easeInOut(entryT));
     textNode.style.transform = `translate(${tx}px,0px)`;
 
-    // 2) morph de path activo: línea -> espiral
+    // 2) morph active path: line -> spiral
     activePath.setAttribute("d", mixedPath(m));
 
     // 3) flujo continuo del texto
     const off = ((t*7.5) % 100); // lento
     textPathNode.setAttribute("startOffset", `${off}%`);
 
-    // 4) reducir tamaño SOLO cerca del centro una vez ya hay espiral
+    // 4) reduce size ONLY near the center once the spiral exists
     // simulado por ciclo de avance local
     const local = ((t*0.10) % 1);
     let shrink = 0;

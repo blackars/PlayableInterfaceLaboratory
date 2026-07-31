@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="es">
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -92,7 +92,7 @@
     </main>
 
     <footer>
-      <p class="hint">Mueve el cursor dentro del panel. Click sostenido = boost. “Pull to Center” lleva todo al centro.</p>
+      <p class="hint">Move the cursor inside the panel. Click and hold = boost. "Pull to Center" brings everything to the center.</p>
       <div class="controls">
         <button id="modeBtn" class="active">Mode: Repel</button>
         <button id="densityBtn">Density: High</button>
@@ -212,7 +212,7 @@
           n.vx += ux * force * direction * (1.8 / n.mass);
           n.vy += uy * force * direction * (1.8 / n.mass);
 
-          // Pequeño swirl para organicidad
+          // Small swirl for organicity
           const swirl = 0.018 * falloff * (state.mode === 'attract' ? 1 : -1);
           n.vx += -uy * swirl;
           n.vy += ux * swirl;
@@ -229,11 +229,11 @@
           n.vx += (n.ox - n.x) * 0.0028;
           n.vy += (n.oy - n.y) * 0.0028;
 
-          // Fricción
+          // Friction
           n.vx *= 0.92;
           n.vy *= 0.92;
 
-          // Integración
+          // Integration
           n.x += n.vx;
           n.y += n.vy;
 

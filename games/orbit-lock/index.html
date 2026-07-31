@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="es">
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -123,7 +123,7 @@
       <div class="status">
         <div><span>Nivel:</span> <b id="levelLabel">1</b></div>
         <div><span>Puntaje:</span> <b id="scoreLabel">0</b></div>
-        <div><span>Precisión:</span> <b id="accLabel">100%</b></div>
+        <div><span>Precision:</span> <b id="accLabel">100%</b></div>
         <div><span>Objetivo:</span> <b id="targetLabel">2 segmentos</b></div>
         <div><span>Estado:</span> <b id="stateLabel">Activo</b></div>
       </div>
@@ -226,8 +226,8 @@
           vel: baseVel,
           desiredVel: baseVel,
           maxVel: 1.8 + i*0.25,
-          damping: 0.92 - i*0.04, // "peso" (más bajo = frena más)
-          inertia: 0.35 + i*0.18, // más alto = responde más lento
+          damping: 0.92 - i*0.04, // "weight" (lower = brakes harder)
+          inertia: 0.35 + i*0.18, // higher = responds slower
           segments,
           lockProgress:0 // anim visual
         };
@@ -293,8 +293,8 @@
 
       // ---------- Lock Logic ----------
       function ringAligned(r){
-        // cada segmento está a: r.angle + k*(TAU/segments)
-        // éxito si alguno cae cerca de refAngle
+        // each segment sits at: r.angle + k*(TAU/segments)
+        // success if any lands near refAngle
         const step = TAU / r.segments;
         const rel = normalizeAngle(st.refAngle - r.angle);
         const k = Math.round(rel / step);
@@ -324,7 +324,7 @@
           sfx.lock(quality);
           showMessage(`LOCK +${gain}`, 420);
 
-          // transición nivel
+          // level transition
           if(st.level < 12){
             st.level++;
             setTimeout(()=>{
@@ -335,7 +335,7 @@
             }, 240);
           }
         }else{
-          // fallo: por inercia, los anillos NO frenan instantáneamente, solo penaliza un poco
+          // miss: due to inertia, the rings do NOT stop instantly, just a small penalty
           for(const r of st.rings){
             r.desiredVel *= 0.86;
           }
@@ -354,8 +354,8 @@
         controlInput(dt);
 
         for(const r of st.rings){
-          // dinámica inercial:
-          // vel tiende a desiredVel lentamente según inertia
+          // inertial dynamics:
+          // vel slowly tends to desiredVel according to inertia
           const blend = clamp(dt / (r.inertia + 0.001), 0, 1);
           r.vel = lerp(r.vel, r.desiredVel, blend);
 
@@ -438,7 +438,7 @@
         // segments
         for(let k=0;k<r.segments;k++){
           const a = normalizeAngle(r.angle + k*segStep);
-          const span = segStep * 0.42; // tamaño segmento
+          const span = segStep * 0.42; // segment size
           const start = a - span*0.5;
           const end   = a + span*0.5;
 

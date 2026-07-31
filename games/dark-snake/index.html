@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="es">
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -416,7 +416,7 @@
         // rota tablero
         boardWrap.style.transform = `rotateZ(${st.foldCount*90}deg)`;
 
-        // remapea dirección relativa
+        // remaps relative direction
         st.dir = rotateDirClockwise90(st.dir);
         st.nextDir = rotateDirClockwise90(st.nextDir);
 
@@ -528,7 +528,7 @@
         if(st.over) return;
         st.over = true;
         st.running = false;
-        stateLabel.textContent = 'Colisión';
+        stateLabel.textContent = 'Collision';
         setMessage('Fragmented', true);
         spawnDeathParticles();
         sfx.dead();

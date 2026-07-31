@@ -1,8 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Capturador de Ondas – 3 Lanes</title>
+<title>Wave Hunter – 3 Lanes</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <style>
     :root { color-scheme: dark; }
@@ -130,19 +130,19 @@
 <canvas id="gameCanvas"></canvas>
 
 <div class="ui-panel" id="hud">
-    <div class="stat"><span>Puntuación</span><strong id="scoreValue">0</strong></div>
+    <div class="stat"><span>Score</span><strong id="scoreValue">0</strong></div>
     <div class="stat"><span>Combo</span><span id="comboValue">0</span></div>
-    <div class="stat"><span>Energía</span><span id="energyLabel">100%</span></div>
+    <div class="stat"><span>Energy</span><span id="energyLabel">100%</span></div>
     <div class="energy-bar"><div class="energy-bar-fill" id="energyFill"></div></div>
-    <div class="stat"><span>Intensidad</span><span id="intensityValue">0%</span></div>
+    <div class="stat"><span>Intensity</span><span id="intensityValue">0%</span></div>
     <div class="intensity-meter"><div class="intensity-meter-fill" id="intensityFill"></div></div>
     <div class="stat"><span>Audio</span><span id="audioStatus">Auto</span></div>
     <div class="controls-row">
-        <button id="startButton">Iniciar / Reiniciar</button>
-        <button id="restartButton">Reintentar</button>
+        <button id="startButton">Start / Restart</button>
+        <button id="restartButton">Retry</button>
     </div>
     <div class="controls-row">
-        <label class="file-btn">Cargar audio<input type="file" accept="audio/*" id="audioInput"></label>
+        <label class="file-btn">Load audio<input type="file" accept="audio/*" id="audioInput"></label>
         <button id="placeholderButton">Placeholder</button>
     </div>
 </div>
@@ -164,16 +164,16 @@
 
 <div id="startScreen" class="modal">
     <div class="modal-content">
-        <h1>Capturador de Ondas</h1>
-        <p>Pulsa la tecla (o pad) del carril correcto cuando la figura toque la línea.</p>
+        <h1>Wave Hunter</h1>
+        <p>Press the key (or pad) for the correct lane when the shape hits the line.</p>
         <ul>
-            <li>PC: ← / ↑ / → o A / W / D.</li>
-            <li>Móvil: pads inferiores.</li>
-            <li>Carga una canción o usa el modo automático.</li>
+            <li>PC: ← / ↑ / → or A / W / D.</li>
+            <li>Mobile: bottom pads.</li>
+            <li>Load a song or use auto mode.</li>
         </ul>
         <div class="controls-row">
-            <button id="startGameBtn">Comenzar</button>
-            <label class="file-btn">Cargar audio<input type="file" accept="audio/*" id="audioInputStart"></label>
+            <button id="startGameBtn">Start</button>
+            <label class="file-btn">Load audio<input type="file" accept="audio/*" id="audioInputStart"></label>
             <button id="placeholderButtonStart">Placeholder</button>
         </div>
     </div>
@@ -181,16 +181,16 @@
 
 <div id="gameOverScreen" class="modal hidden">
     <div class="modal-content">
-        <h1>Fin de la partida</h1>
-        <p>Tu puntaje: <strong id="finalScore">0</strong></p>
+        <h1>Game Over</h1>
+        <p>Your score: <strong id="finalScore">0</strong></p>
         <div class="controls-row">
-            <button id="playAgainBtn">Reintentar</button>
-            <button id="backToMenuBtn">Volver al inicio</button>
+            <button id="playAgainBtn">Retry</button>
+            <button id="backToMenuBtn">Back to Menu</button>
         </div>
     </div>
 </div>
 
-<div id="credits">Capturador de Ondas — 3 lanes</div>
+<div id="credits">Wave Hunter — 3 lanes</div>
 
 <script>
 const PLACEHOLDER_AUDIO_URL = "";
@@ -208,7 +208,7 @@ const LANE_TYPES = ["square","circle","triangle"];
 const RATING_POINTS = { Perfect: 160, Great: 130, Good: 100 };
 const RATING_ENERGY = { Perfect: 7, Great: 5, Good: 4 };
 
-/* Partículas */
+/* Particles */
 class Particle {
     constructor(x,y,color="255,255,255"){
         this.x=x; this.y=y; this.life=1;
@@ -362,7 +362,7 @@ class AudioController {
         try{
             await this.context.resume();
             await this.audioElement.play();
-        }catch(err){ console.warn("No se pudo iniciar audio aún:",err); }
+        }catch(err){         console.warn("Could not start audio yet:",err); }
         this.audioElement.onended=()=>{ this.mode="auto"; };
     }
     update(dt){
@@ -772,13 +772,13 @@ class Game {
             ctx.fillStyle="rgba(255,255,255,0.04)";
             ctx.font="700 48px 'Space Mono', monospace";
             ctx.textAlign="center";
-            ctx.fillText("Haz clic en Comenzar",this.width/2,this.height*0.5);
+            ctx.fillText("Click to Start",this.width/2,this.height*0.5);
             ctx.restore();
         }
     }
 }
 
-/* Inicialización */
+/* Initialization */
 const canvas=document.getElementById("gameCanvas");
 const game=new Game(canvas);
 
@@ -800,7 +800,7 @@ function gameLoop(timestamp){
 }
 requestAnimationFrame(gameLoop);
 
-/* Controles teclado */
+/* Keyboard Controls */
 const activeKeys=new Set();
 window.addEventListener("keydown",e=>{
     const lane=KEY_TO_LANE[e.key];
@@ -821,7 +821,7 @@ window.addEventListener("keyup",e=>{
     }
 });
 
-/* Pads táctiles */
+/* Touch Pads */
 document.querySelectorAll('.lane-pad').forEach(btn=>{
     const lane=Number(btn.dataset.lane);
     const press=e=>{ e.preventDefault(); game.handleLanePress(lane); };

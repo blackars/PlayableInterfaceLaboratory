@@ -1,5 +1,5 @@
-<!doctype html>
-<html lang="es">
+﻿<!doctype html>
+<html lang="en">
 <head>
 <meta charset="utf-8"/>
 <title>Subatomic Minimal Prototype</title>
@@ -14,7 +14,7 @@
 </head>
 <body>
 <canvas id="c"></canvas>
-<div id="hint">Drag para energía/dirección · click para iniciar audio</div>
+<div id="hint">Drag for energy/direction · click to start audio</div>
 <script>
 const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d');
@@ -593,7 +593,7 @@ function update(){
 }
 update();
 
-/* --- Audio experimental mínimo --- */
+/* --- Minimal experimental audio --- */
 const audio = {
   ctx:null, started:false,
   init(){

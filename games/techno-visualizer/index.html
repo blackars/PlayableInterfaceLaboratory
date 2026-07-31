@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -212,7 +212,7 @@
 
     <div class="panel">
       <div class="controls">
-        <label class="icon-btn" for="audioFile" title="Cargar pista" aria-label="Cargar pista">
+        <label class="icon-btn" for="audioFile" title="Load track" aria-label="Load track">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M5 20h14v-2H5v2zm7-16-5 5h3v6h4V9h3l-5-5z"/>
           </svg>
@@ -245,7 +245,7 @@
       </div>
     </div>
 
-    <div class="drop-zone" id="dropZone">Suelta la pista aquí</div>
+    <div class="drop-zone" id="dropZone">Drop the track here</div>
     <audio id="audio"></audio>
   </div>
 
@@ -325,7 +325,7 @@
     playBtn.addEventListener("click", async () => {
       setupAudioContext();
       if (!audio.src) {
-        trackName.textContent = "Primero carga una canción";
+        trackName.textContent = "Load a song first";
         return;
       }
       if (audioContext.state === "suspended") await audioContext.resume();

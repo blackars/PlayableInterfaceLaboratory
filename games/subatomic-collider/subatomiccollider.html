@@ -1,5 +1,5 @@
-<!doctype html>
-<html lang="es">
+﻿<!doctype html>
+<html lang="en">
 <head>
 <meta charset="utf-8"/>
 <title>Subatomic Minimal Prototype</title>
@@ -14,7 +14,7 @@
 </head>
 <body>
 <canvas id="c"></canvas>
-<div id="hint">Drag para energía/dirección · click para iniciar audio</div>
+<div id="hint">Drag for energy/direction · click to start audio</div>
 <script>
 const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d');
@@ -208,7 +208,7 @@ function drawImpact(im){
       r.w *= 0.985;
     });
   } else if(im.type==="poly"){
-    // onda tipo ecualización agresiva
+    // aggressive equalizer-style wave
     ctx.strokeStyle="rgba(255,255,255,0.7)";
     const base = 14 + im.t*1.4;
     ctx.beginPath();
@@ -219,7 +219,7 @@ function drawImpact(im){
     }
     ctx.closePath(); ctx.stroke();
 
-    // líneas radiales agresivas
+    // aggressive radial lines
     ctx.strokeStyle="rgba(255,255,255,0.35)";
     for(let i=0;i<28;i++){
       const a = i*(Math.PI*2/28) + im.t*0.02;
@@ -360,7 +360,7 @@ function update(){
 }
 update();
 
-/* --- Audio experimental mínimo --- */
+/* --- Minimal experimental audio --- */
 const audio = {
   ctx:null, started:false,
   init(){
