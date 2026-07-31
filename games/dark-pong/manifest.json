@@ -1,0 +1,14 @@
+﻿{
+    "input":  "keyboard",
+    "id":  "dark-pong",
+    "type":  "game",
+    "description":  "Organic breaker, molecules collapse on impact.",
+    "audio":  false,
+    "status":  "stable",
+    "route":  "./games/dark-pong/index.html",
+    "title":  "Dark Pong",
+    "duration":  "3 min",
+    "tags":  [
+                 "game"
+             ]
+}

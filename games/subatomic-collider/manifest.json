@@ -1,0 +1,15 @@
+﻿{
+    "input":  "mouse",
+    "id":  "subatomic-collider",
+    "type":  "game",
+    "description":  "Particle collision and explosion simulator.",
+    "audio":  false,
+    "status":  "stable",
+    "route":  "./games/subatomic-collider/index.html",
+    "title":  "Subatomic Collider",
+    "duration":  "2 min",
+    "tags":  [
+                 "game",
+                 "experience"
+             ]
+}

@@ -1,0 +1,14 @@
+﻿{
+    "input":  "none",
+    "id":  "parallax-gradient",
+    "type":  "experience",
+    "description":  "Layered gradient parallax portfolio effect.",
+    "audio":  false,
+    "status":  "stable",
+    "route":  "./experiences/parallax-gradient/index.html",
+    "title":  "Parallax Gradient",
+    "duration":  "1 min",
+    "tags":  [
+                 "element"
+             ]
+}

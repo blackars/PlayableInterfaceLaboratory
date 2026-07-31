@@ -1,0 +1,15 @@
+﻿{
+    "input":  "camera",
+    "id":  "ascii-glitch-mirror",
+    "type":  "experience",
+    "description":  "Webcam-driven ASCII mirror with glitch effects.",
+    "audio":  false,
+    "status":  "stable",
+    "route":  "./experiences/ascii-glitch-mirror/index.html",
+    "title":  "ASCII Glitch Mirror",
+    "duration":  "2 min",
+    "tags":  [
+                 "experience",
+                 "element"
+             ]
+}

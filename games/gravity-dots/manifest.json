@@ -1,0 +1,14 @@
+﻿{
+    "input":  "mouse",
+    "id":  "gravity-dots",
+    "type":  "game",
+    "description":  "Physics-based particle gravity toy.",
+    "audio":  false,
+    "status":  "stable",
+    "route":  "./games/gravity-dots/index.html",
+    "title":  "Gravity Dots",
+    "duration":  "2 min",
+    "tags":  [
+                 "game"
+             ]
+}

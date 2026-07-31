@@ -1,0 +1,14 @@
+﻿{
+    "input":  "none",
+    "id":  "scrollytelling",
+    "type":  "experience",
+    "description":  "Narrative scroll-driven scene transitions.",
+    "audio":  false,
+    "status":  "stable",
+    "route":  "./experiences/scrollytelling/index.html",
+    "title":  "Scrollytelling",
+    "duration":  "2 min",
+    "tags":  [
+                 "element"
+             ]
+}

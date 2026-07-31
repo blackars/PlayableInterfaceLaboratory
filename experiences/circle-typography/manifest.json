@@ -1,0 +1,14 @@
+﻿{
+    "input":  "none",
+    "id":  "circle-typography",
+    "type":  "experience",
+    "description":  "Kinetic typography on circular paths.",
+    "audio":  false,
+    "status":  "stable",
+    "route":  "./experiences/circle-typography/index.html",
+    "title":  "Circle Typography",
+    "duration":  "1 min",
+    "tags":  [
+                 "experience"
+             ]
+}

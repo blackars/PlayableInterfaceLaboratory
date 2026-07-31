@@ -1,0 +1,14 @@
+﻿{
+    "input":  "keyboard",
+    "id":  "prism-runner",
+    "type":  "game",
+    "description":  "Endless runner with prismatic obstacles.",
+    "audio":  false,
+    "status":  "stable",
+    "route":  "./games/prism-runner/index.html",
+    "title":  "Prism Runner",
+    "duration":  "3 min",
+    "tags":  [
+                 "game"
+             ]
+}

@@ -11,6 +11,11 @@
   <meta name="theme-color" content="#030303" />
   <link rel="icon" type="image/x-icon" href="./favicon.ico" />
   <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="manifest" href="./site.webmanifest" />
+  <link rel="apple-touch-icon" href="./icon-192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="PIL" />
 
   <style>
     :root {
@@ -483,6 +488,151 @@
       display: none;
     }
 
+    /* ── Overlay ── */
+    .game-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: #050505;
+      flex-direction: column;
+    }
+
+    .game-overlay.active {
+      display: flex;
+    }
+
+    .overlay-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 18px;
+      border-bottom: 1px solid var(--line);
+      background: var(--bg);
+      flex: 0 0 auto;
+      z-index: 101;
+    }
+
+    .overlay-back {
+      background: none;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      padding: 6px 14px;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-family: inherit;
+    }
+
+    .overlay-back:hover {
+      border-color: var(--white);
+      color: var(--white);
+    }
+
+    .overlay-title {
+      color: var(--muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .overlay-frame {
+      flex: 1;
+      width: 100%;
+      border: 0;
+      background: #000;
+    }
+
+    /* ── Favorites ── */
+    .star-btn {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      z-index: 6;
+      background: none;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      width: 30px;
+      height: 30px;
+      font-size: 14px;
+      line-height: 1;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: all var(--transition);
+    }
+
+    .star-btn.active {
+      border-color: var(--white);
+      color: var(--white);
+      background: rgba(255,255,255,0.08);
+    }
+
+    .star-btn:hover {
+      border-color: var(--white);
+      color: var(--white);
+    }
+
+    /* ── Badges ── */
+    .badge-duration {
+      position: absolute;
+      left: 12px;
+      bottom: 12px;
+      z-index: 6;
+      padding: 3px 8px;
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: rgba(0,0,0,0.7);
+    }
+
+    .badge-status {
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      z-index: 6;
+      padding: 3px 8px;
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid var(--white);
+      color: var(--white);
+      background: rgba(0,0,0,0.7);
+    }
+
+    .badge-status.new {
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .badge-lastplayed {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      z-index: 6;
+      padding: 3px 8px;
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #b0b0b0;
+      background: rgba(0,0,0,0.7);
+    }
+
+    .filter-btn.fav-active {
+      border-color: var(--white);
+      color: var(--white);
+      background: rgba(255,255,255,0.12);
+    }
+
     @media (max-width: 1100px) {
       .hero { grid-template-columns: 1fr; gap: 28px; }
       .description { max-width: 760px; }
@@ -536,168 +686,100 @@
     </footer>
   </main>
 
+  <div class="game-overlay" id="game-overlay">
+    <div class="overlay-bar">
+      <button class="overlay-back" id="overlay-back">← HUB</button>
+      <span class="overlay-title" id="overlay-title"></span>
+      <span style="width:80px"></span>
+    </div>
+    <iframe class="overlay-frame" id="overlay-frame"></iframe>
+  </div>
+
   <script>
-    const MODULES = [
-      {
-        title: "ASCII Art Effect",
-        description: "Text-mask particle system with mouse interaction.",
-        route: "./experiences/ascii-art/index.html",
-        tags: ["experience"]
-      },
-      {
-        title: "ASCII Glitch Mirror",
-        description: "Webcam-driven ASCII mirror with glitch effects.",
-        route: "./experiences/ascii-glitch-mirror/index.html",
-        tags: ["experience", "element"]
-      },
-      {
-        title: "Circle Typography",
-        description: "Kinetic typography on circular paths.",
-        route: "./experiences/circle-typography/index.html",
-        tags: ["experience"]
-      },
-      {
-        title: "Spiral 1",
-        description: "Procedural generative spiral visualization.",
-        route: "./experiences/spiral-1/index.html",
-        tags: ["experience"]
-      },
-      {
-        title: "Spiral 2",
-        description: "Alternate spiral with speed and color controls.",
-        route: "./experiences/spiral-2/index.html",
-        tags: ["experience"]
-      },
-      {
-        title: "Magnetic Cursor",
-        description: "Reactive field with magnetic cursor tracking.",
-        route: "./experiences/magnetic-cursor/index.html",
-        tags: ["experience", "element"]
-      },
-      {
-        title: "Scroll Tunnel",
-        description: "Infinite depth parallax tunnel on scroll.",
-        route: "./experiences/scroll-tunnel/index.html",
-        tags: ["experience"]
-      },
-      {
-        title: "Tri-Line",
-        description: "Cinema-minimal generative line composition.",
-        route: "./experiences/tri-line/index.html",
-        tags: ["experience"]
-      },
-      {
-        title: "Typography Boss",
-        description: "Kinetic typography with preset animations.",
-        route: "./experiences/typography-boss/index.html",
-        tags: ["experience"]
-      },
-      {
-        title: "Clip-Path Effect",
-        description: "Dynamic CSS clip-path masking reveal.",
-        route: "./experiences/clip-path/index.html",
-        tags: ["element", "test"]
-      },
-      {
-        title: "Zoom Scroll",
-        description: "Background zoom transitions on scroll.",
-        route: "./experiences/zoom-scroll/index.html",
-        tags: ["element"]
-      },
-      {
-        title: "Parallax Gradient",
-        description: "Layered gradient parallax portfolio effect.",
-        route: "./experiences/parallax-gradient/index.html",
-        tags: ["element"]
-      },
-      {
-        title: "Scrollytelling",
-        description: "Narrative scroll-driven scene transitions.",
-        route: "./experiences/scrollytelling/index.html",
-        tags: ["element"]
-      },
-      {
-        title: "Sticky Geometry",
-        description: "Sticky CSS geometry sections with labels.",
-        route: "./experiences/sticky-geometry/index.html",
-        tags: ["element"]
-      },
-      {
-        title: "Dark Snake",
-        description: "Cube-fold grid snake game, dark theme.",
-        route: "./games/dark-snake/index.html",
-        tags: ["game"]
-      },
-      {
-        title: "Gravity Dots",
-        description: "Physics-based particle gravity toy.",
-        route: "./games/gravity-dots/index.html",
-        tags: ["game"]
-      },
-      {
-        title: "Mirror Split",
-        description: "Dynamic-axis puzzle with mirror reflections.",
-        route: "./games/mirror-split/index.html",
-        tags: ["game", "test"]
-      },
-      {
-        title: "Monolith Defense",
-        description: "Orbital shield defense with tunable parameters.",
-        route: "./games/monolith-defense/index.html",
-        tags: ["game"]
-      },
-      {
-        title: "Orbit Lock",
-        description: "Precision-timing orbital synchronization puzzle.",
-        route: "./games/orbit-lock/index.html",
-        tags: ["game"]
-      },
-      {
-        title: "Pacman Darks",
-        description: "Pacman variant with dark aesthetic and AI.",
-        route: "./games/pacman-darks/index.html",
-        tags: ["game"]
-      },
-      {
-        title: "Prism Runner",
-        description: "Endless runner with prismatic obstacles.",
-        route: "./games/prism-runner/index.html",
-        tags: ["game"]
-      },
-      {
-        title: "Dark Pong",
-        description: "Organic breaker — molecules collapse on impact.",
-        route: "./games/dark-pong/index.html",
-        tags: ["game"]
-      },
-      {
-        title: "Subatomic Collider",
-        description: "Particle collision and explosion simulator.",
-        route: "./games/subatomic-collider/index.html",
-        tags: ["game", "experience"]
-      },
-      {
-        title: "Void Organism",
-        description: "Space invaders with energy management.",
-        route: "./games/dark-invaders/index.html",
-        tags: ["game"]
-      },
-      {
-        title: "Techno Visualizer",
-        description: "Audio-reactive visual engine with presets.",
-        route: "./games/techno-visualizer/index.html",
-        tags: ["experience", "game"]
-      },
-      {
-        title: "Wave Hunter",
-        description: "3-lane wave capture game with audio input.",
-        route: "./games/wave-hunter/index.html",
-        tags: ["game"]
-      }
+    // ── Seed Modules (fallback if manifests fail to load) ──
+    const SEED_MODULES = [
+      { title: "ASCII Art Effect", description: "Text-mask particle system with mouse interaction.", route: "./experiences/ascii-art/index.html", tags: ["experience"] },
+      { title: "ASCII Glitch Mirror", description: "Webcam-driven ASCII mirror with glitch effects.", route: "./experiences/ascii-glitch-mirror/index.html", tags: ["experience", "element"] },
+      { title: "Circle Typography", description: "Kinetic typography on circular paths.", route: "./experiences/circle-typography/index.html", tags: ["experience"] },
+      { title: "Spiral 1", description: "Procedural generative spiral visualization.", route: "./experiences/spiral-1/index.html", tags: ["experience"] },
+      { title: "Spiral 2", description: "Alternate spiral with speed and color controls.", route: "./experiences/spiral-2/index.html", tags: ["experience"] },
+      { title: "Magnetic Cursor", description: "Reactive field with magnetic cursor tracking.", route: "./experiences/magnetic-cursor/index.html", tags: ["experience", "element"] },
+      { title: "Scroll Tunnel", description: "Infinite depth parallax tunnel on scroll.", route: "./experiences/scroll-tunnel/index.html", tags: ["experience"] },
+      { title: "Tri-Line", description: "Cinema-minimal generative line composition.", route: "./experiences/tri-line/index.html", tags: ["experience"] },
+      { title: "Typography Boss", description: "Kinetic typography with preset animations.", route: "./experiences/typography-boss/index.html", tags: ["experience"] },
+      { title: "Clip-Path Effect", description: "Dynamic CSS clip-path masking reveal.", route: "./experiences/clip-path/index.html", tags: ["element", "test"] },
+      { title: "Zoom Scroll", description: "Background zoom transitions on scroll.", route: "./experiences/zoom-scroll/index.html", tags: ["element"] },
+      { title: "Parallax Gradient", description: "Layered gradient parallax portfolio effect.", route: "./experiences/parallax-gradient/index.html", tags: ["element"] },
+      { title: "Scrollytelling", description: "Narrative scroll-driven scene transitions.", route: "./experiences/scrollytelling/index.html", tags: ["element"] },
+      { title: "Sticky Geometry", description: "Sticky CSS geometry sections with labels.", route: "./experiences/sticky-geometry/index.html", tags: ["element"] },
+      { title: "Dark Snake", description: "Cube-fold grid snake game, dark theme.", route: "./games/dark-snake/index.html", tags: ["game"] },
+      { title: "Gravity Dots", description: "Physics-based particle gravity toy.", route: "./games/gravity-dots/index.html", tags: ["game"] },
+      { title: "Mirror Split", description: "Dynamic-axis puzzle with mirror reflections.", route: "./games/mirror-split/index.html", tags: ["game", "test"] },
+      { title: "Monolith Defense", description: "Orbital shield defense with tunable parameters.", route: "./games/monolith-defense/index.html", tags: ["game"] },
+      { title: "Orbit Lock", description: "Precision-timing orbital synchronization puzzle.", route: "./games/orbit-lock/index.html", tags: ["game"] },
+      { title: "Pacman Darks", description: "Pacman variant with dark aesthetic and AI.", route: "./games/pacman-darks/index.html", tags: ["game"] },
+      { title: "Prism Runner", description: "Endless runner with prismatic obstacles.", route: "./games/prism-runner/index.html", tags: ["game"] },
+      { title: "Dark Pong", description: "Organic breaker — molecules collapse on impact.", route: "./games/dark-pong/index.html", tags: ["game"] },
+      { title: "Subatomic Collider", description: "Particle collision and explosion simulator.", route: "./games/subatomic-collider/index.html", tags: ["game", "experience"] },
+      { title: "Void Organism", description: "Space invaders with energy management.", route: "./games/dark-invaders/index.html", tags: ["game"] },
+      { title: "Techno Visualizer", description: "Audio-reactive visual engine with presets.", route: "./games/techno-visualizer/index.html", tags: ["experience", "game"] },
+      { title: "Wave Hunter", description: "3-lane wave capture game with audio input.", route: "./games/wave-hunter/index.html", tags: ["game"] }
     ];
 
+    // ── Catalog Loader ──
+    async function loadCatalog() {
+      const results = await Promise.allSettled(
+        SEED_MODULES.map(m => {
+          const manifestPath = m.route.replace(/\/index\.html$/, "/manifest.json");
+          return fetch(manifestPath).then(r => r.ok ? r.json() : null);
+        })
+      );
+      const loaded = results
+        .map((r, i) => r.status === "fulfilled" && r.value ? { ...SEED_MODULES[i], ...r.value } : null)
+        .filter(Boolean);
+      return loaded.length > 0 ? loaded : SEED_MODULES;
+    }
+
+    // ── Progress Store ──
+    const Progress = {
+      KEY: "hub-progress",
+      data: null,
+      lastPlayedRoute: null,
+      load() {
+        try {
+          const raw = JSON.parse(localStorage.getItem(this.KEY));
+          this.data = raw || {};
+          this.lastPlayedRoute = this.data.__lastPlayed || null;
+        } catch { this.data = {}; this.lastPlayedRoute = null; }
+      },
+      save() {
+        this.data.__lastPlayed = this.lastPlayedRoute;
+        localStorage.setItem(this.KEY, JSON.stringify(this.data));
+      },
+      get(route) {
+        return this.data[route] || { plays: 0, lastPlayed: null, favorite: false };
+      },
+      trackPlay(route) {
+        const p = this.get(route);
+        p.plays++;
+        p.lastPlayed = Date.now();
+        this.data[route] = p;
+        this.lastPlayedRoute = route;
+        this.save();
+      },
+      toggleFavorite(route) {
+        const p = this.get(route);
+        p.favorite = !p.favorite;
+        this.data[route] = p;
+        this.save();
+        return p.favorite;
+      }
+    };
+
+    // ── State ──
     const ALL_TAGS = ["game", "experience", "element", "test"];
     let activeFilter = null;
+    let catalog = [];
 
     const grid = document.getElementById("games-grid");
     const count = document.getElementById("game-count");
@@ -722,122 +804,150 @@
         btn.dataset.filter = tag;
         filtersEl.appendChild(btn);
       });
+
+      const favBtn = document.createElement("button");
+      favBtn.className = "filter-btn";
+      favBtn.dataset.filter = "favorites";
+      favBtn.innerHTML = "&#9734; Favorites";
+      filtersEl.appendChild(favBtn);
     }
 
     function createCard(mod, index) {
+      const route = mod.route || "";
+      const progress = Progress.get(route);
+      const isLastPlayed = route === Progress.lastPlayedRoute && progress.plays > 0;
+
       const card = document.createElement("article");
       card.className = "game-card";
       card.tabIndex = 0;
       card.setAttribute("role", "button");
-      card.setAttribute("aria-label", `Open ${mod.title} in a new tab`);
-      card.dataset.tags = mod.tags.join(",");
-      card.dataset.route = mod.route || "";
+      card.setAttribute("aria-label", `Open ${mod.title}`);
+      card.dataset.tags = mod.tags ? mod.tags.join(",") : "";
+      card.dataset.route = route;
       card.dataset.index = index;
 
-      const tagsHTML = mod.tags.map(t => `<span class="tag" data-tag="${t}">${t}</span>`).join("");
+      const tagsHTML = (mod.tags || []).map(t => `<span class="tag" data-tag="${t}">${t}</span>`).join("");
+      const statusBadge = mod.status === "new" ? `<span class="badge-status new">NEW</span>` : "";
+      const lastBadge = isLastPlayed ? `<span class="badge-lastplayed">LAST PLAYED</span>` : "";
+      const starClass = progress.favorite ? " active" : "";
+      const starChar = progress.favorite ? "&#9733;" : "&#9734;";
+      const durationBadge = mod.duration ? `<span class="badge-duration">${mod.duration}</span>` : "";
 
       card.innerHTML = `
         <span class="open-label">Open fullscreen</span>
-
+        ${statusBadge}
+        ${lastBadge}
         <div class="preview-shell">
           <div class="placeholder-preview"><span>${mod.title}</span></div>
         </div>
-
         <div class="game-info">
           <div class="game-row">
-            <div>
-              <h3 class="game-title">${mod.title}</h3>
-            </div>
+            <div><h3 class="game-title">${mod.title}</h3></div>
             <span class="game-index">${String(index + 1).padStart(2, "0")}</span>
           </div>
-
           <div class="game-row">
-            <p class="game-desc">${mod.description}</p>
+            <p class="game-desc">${mod.description || ""}</p>
             <span class="status-dot" aria-hidden="true"></span>
           </div>
-
           <div class="tags">${tagsHTML}</div>
         </div>
+        <button class="star-btn${starClass}" data-route="${route}" title="Favorite">&#9734;</button>
+        ${durationBadge}
       `;
-
       return card;
     }
 
+    // ── Overlay ──
     function openModule(route) {
       if (!route) return;
-
-      const features = [
-        "popup=yes",
-        "noopener=yes",
-        "noreferrer=yes",
-        `width=${screen.availWidth}`,
-        `height=${screen.availHeight}`,
-        "left=0",
-        "top=0"
-      ].join(",");
-
-      const targetUrl = `${route}${route.includes("?") ? "&" : "?"}hubFullscreen=1`;
-      const newWindow = window.open(targetUrl, "_blank", features);
-
-      if (newWindow) {
-        try {
-          newWindow.moveTo(0, 0);
-          newWindow.resizeTo(screen.availWidth, screen.availHeight);
-        } catch (e) {}
-      }
+      Progress.trackPlay(route);
+      const mod = catalog.find(m => m.route === route);
+      const overlay = document.getElementById("game-overlay");
+      const frame = document.getElementById("overlay-frame");
+      const title = document.getElementById("overlay-title");
+      title.textContent = mod ? mod.title : "";
+      frame.src = route + (route.includes("?") ? "&" : "?") + "hubFullscreen=1";
+      overlay.classList.add("active");
+      document.body.style.overflow = "hidden";
+      AudioEngine.playOpen();
     }
 
+    function closeOverlay() {
+      const overlay = document.getElementById("game-overlay");
+      const frame = document.getElementById("overlay-frame");
+      overlay.classList.remove("active");
+      frame.src = "";
+      document.body.style.overflow = "";
+    }
+
+    document.getElementById("overlay-back").addEventListener("click", () => {
+      AudioEngine.playClick();
+      closeOverlay();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeOverlay();
+    });
+
+    // ── Iframe on hover ──
     function insertIframe(card) {
       if (card.querySelector("iframe")) return;
       const route = card.dataset.route;
       if (!route) return;
-
       const shell = card.querySelector(".preview-shell");
       const placeholder = shell.querySelector(".placeholder-preview");
-
       const iframe = document.createElement("iframe");
       iframe.className = "preview";
       iframe.src = route;
       iframe.title = `Preview of ${card.querySelector(".game-title").textContent}`;
       iframe.tabIndex = -1;
       iframe.scrolling = "no";
-
       shell.appendChild(iframe);
-
-      iframe.addEventListener("load", () => {
-        if (placeholder) placeholder.remove();
-      }, { once: true });
+      iframe.addEventListener("load", () => { if (placeholder) placeholder.remove(); }, { once: true });
     }
 
+    // ── Render ──
     function render() {
+      grid.innerHTML = "";
       const fragment = document.createDocumentFragment();
-      MODULES.forEach((mod, i) => fragment.appendChild(createCard(mod, i)));
+      catalog.forEach((mod, i) => fragment.appendChild(createCard(mod, i)));
       grid.appendChild(fragment);
-
       const observer = new IntersectionObserver((entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            entry.target.dataset.near = "true";
-          }
-        }
+        for (const e of entries) { if (e.isIntersecting) e.target.dataset.near = "true"; }
       }, { rootMargin: "300px" });
-
-      grid.querySelectorAll(".game-card").forEach(card => observer.observe(card));
+      grid.querySelectorAll(".game-card").forEach(c => observer.observe(c));
     }
 
+    // ── Init ──
+    Progress.load();
     createFilters();
-    render();
-    updateCount();
+
+    loadCatalog().then(mods => {
+      catalog = mods;
+      render();
+      updateCount();
+    });
 
     // ── Event Delegation ──
+    const isTouch = window.matchMedia("(pointer: coarse)").matches;
+
     grid.addEventListener("mouseenter", (e) => {
       const card = e.target.closest(".game-card");
-      if (!card) return;
+      if (!card || isTouch) return;
       if (card.dataset.near === "true") insertIframe(card);
       AudioEngine.playHover();
     }, true);
 
     grid.addEventListener("click", (e) => {
+      const star = e.target.closest(".star-btn");
+      if (star) {
+        e.stopPropagation();
+        const route = star.dataset.route;
+        const active = Progress.toggleFavorite(route);
+        star.classList.toggle("active", active);
+        star.innerHTML = active ? "&#9733;" : "&#9734;";
+        return;
+      }
       const card = e.target.closest(".game-card");
       if (!card) return;
       AudioEngine.playOpen();
@@ -856,22 +966,24 @@
       const btn = e.target.closest(".filter-btn");
       if (!btn) return;
       AudioEngine.playFilterClick();
-
-      const filter = btn.dataset.filter === "all" ? null : btn.dataset.filter;
-      activeFilter = filter;
+      const filter = btn.dataset.filter;
+      activeFilter = filter === "all" ? null : filter;
 
       filtersEl.querySelectorAll(".filter-btn").forEach(b => {
-        b.classList.toggle("active", filter === null ? b.dataset.filter === "all" : b.dataset.filter === filter);
+        b.classList.toggle("active", filter === "all" ? b.dataset.filter === "all" : b.dataset.filter === filter);
       });
 
       grid.querySelectorAll(".game-card").forEach(card => {
-        if (!filter) {
+        if (!filter || filter === "all") {
           card.classList.remove("hidden");
+        } else if (filter === "favorites") {
+          const route = card.dataset.route;
+          const p = Progress.get(route);
+          card.classList.toggle("hidden", !p.favorite);
         } else {
           card.classList.toggle("hidden", !card.dataset.tags.split(",").includes(filter));
         }
       });
-
       updateCount();
     });
 
@@ -881,33 +993,21 @@
     function typewrite(el, html, speed) {
       el.innerHTML = '';
       let i = 0;
-
       function type() {
-        if (i >= html.length) {
-          el.classList.add('done');
-          return;
-        }
+        if (i >= html.length) { el.classList.add('done'); return; }
         if (html[i] === '<') {
           const close = html.indexOf('>', i);
-          if (close !== -1) {
-            el.insertAdjacentHTML('beforeend', html.slice(i, close + 1));
-            i = close + 1;
-            type();
-            return;
-          }
+          if (close !== -1) { el.insertAdjacentHTML('beforeend', html.slice(i, close + 1)); i = close + 1; type(); return; }
         }
         el.insertAdjacentText('beforeend', html[i]);
         i++;
-
         let delay = speed;
         const ch = html[i - 1];
         if (ch === '.' || ch === '!') delay += 80;
         else if (ch === ',') delay += 40;
         else if (ch === ' ') delay -= 10;
-
         setTimeout(type, delay);
       }
-
       type();
     }
 
@@ -918,11 +1018,7 @@
 
     // ── Audio Engine ──
     const AudioEngine = {
-      ctx: null,
-      muted: true,
-      initialized: false,
-      ambient: null,
-      ambientGain: null,
+      ctx: null, muted: true, initialized: false, ambient: null, ambientGain: null,
 
       init() {
         if (this.initialized) return;
@@ -943,41 +1039,25 @@
         const now = this.ctx.currentTime;
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(880, now);
-        osc.frequency.exponentialRampToValueAtTime(1320, now + 0.06);
-        gain.gain.setValueAtTime(0.06, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
-        osc.connect(gain).connect(this.ctx.destination);
-        osc.start(now);
-        osc.stop(now + 0.1);
+        osc.type = "sine"; osc.frequency.setValueAtTime(880, now); osc.frequency.exponentialRampToValueAtTime(1320, now + 0.06);
+        gain.gain.setValueAtTime(0.06, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+        osc.connect(gain).connect(this.ctx.destination); osc.start(now); osc.stop(now + 0.1);
       },
 
       playClick() {
         if (this.muted || !this.ctx) return;
         const now = this.ctx.currentTime;
-
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(220, now);
-        osc.frequency.exponentialRampToValueAtTime(660, now + 0.03);
-        gain.gain.setValueAtTime(0.1, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
-        osc.connect(gain).connect(this.ctx.destination);
-        osc.start(now);
-        osc.stop(now + 0.06);
-
+        osc.type = "sine"; osc.frequency.setValueAtTime(220, now); osc.frequency.exponentialRampToValueAtTime(660, now + 0.03);
+        gain.gain.setValueAtTime(0.1, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+        osc.connect(gain).connect(this.ctx.destination); osc.start(now); osc.stop(now + 0.06);
         const buf = this.ctx.createBuffer(1, this.ctx.sampleRate * 0.03, this.ctx.sampleRate);
         const data = buf.getChannelData(0);
         for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * 0.04;
-        const src = this.ctx.createBufferSource();
-        src.buffer = buf;
-        const nGain = this.ctx.createGain();
-        nGain.gain.setValueAtTime(0.04, now);
-        nGain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
-        src.connect(nGain).connect(this.ctx.destination);
-        src.start(now);
+        const src = this.ctx.createBufferSource(); src.buffer = buf;
+        const nGain = this.ctx.createGain(); nGain.gain.setValueAtTime(0.04, now); nGain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+        src.connect(nGain).connect(this.ctx.destination); src.start(now);
       },
 
       playOpen() {
@@ -985,15 +1065,19 @@
         const now = this.ctx.currentTime;
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(330, now);
-        osc.frequency.exponentialRampToValueAtTime(1760, now + 0.15);
-        gain.gain.setValueAtTime(0.07, now);
-        gain.gain.linearRampToValueAtTime(0.09, now + 0.08);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
-        osc.connect(gain).connect(this.ctx.destination);
-        osc.start(now);
-        osc.stop(now + 0.2);
+        osc.type = "sine"; osc.frequency.setValueAtTime(330, now); osc.frequency.exponentialRampToValueAtTime(1760, now + 0.15);
+        gain.gain.setValueAtTime(0.07, now); gain.gain.linearRampToValueAtTime(0.09, now + 0.08); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+        osc.connect(gain).connect(this.ctx.destination); osc.start(now); osc.stop(now + 0.2);
+      },
+
+      playClose() {
+        if (this.muted || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = "sine"; osc.frequency.setValueAtTime(880, now); osc.frequency.exponentialRampToValueAtTime(220, now + 0.12);
+        gain.gain.setValueAtTime(0.06, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+        osc.connect(gain).connect(this.ctx.destination); osc.start(now); osc.stop(now + 0.15);
       },
 
       playFilterClick() {
@@ -1001,21 +1085,15 @@
         const now = this.ctx.currentTime;
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
-        osc.type = "triangle";
-        osc.frequency.setValueAtTime(440, now);
-        osc.frequency.exponentialRampToValueAtTime(660, now + 0.04);
-        gain.gain.setValueAtTime(0.06, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
-        osc.connect(gain).connect(this.ctx.destination);
-        osc.start(now);
-        osc.stop(now + 0.05);
+        osc.type = "triangle"; osc.frequency.setValueAtTime(440, now); osc.frequency.exponentialRampToValueAtTime(660, now + 0.04);
+        gain.gain.setValueAtTime(0.06, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+        osc.connect(gain).connect(this.ctx.destination); osc.start(now); osc.stop(now + 0.05);
       },
 
       startAmbient() {
         if (!this.ctx || this.ambient) return;
         const audio = new Audio("./ambient-loop.mp3");
-        audio.loop = true;
-        audio.volume = 0.12;
+        audio.loop = true; audio.volume = 0.12;
         this.ambientGain = this.ctx.createGain();
         this.ambientGain.gain.value = this.muted ? 0 : 0.12;
         const src = this.ctx.createMediaElementSource(audio);
@@ -1027,31 +1105,32 @@
       toggleMute() {
         this.muted = !this.muted;
         localStorage.setItem("hub-muted", this.muted);
-        if (this.ambientGain) {
-          this.ambientGain.gain.value = this.muted ? 0 : 0.12;
-        }
+        if (this.ambientGain) this.ambientGain.gain.value = this.muted ? 0 : 0.12;
         this.updateMuteBtn();
       },
 
       updateMuteBtn() {
         const btn = document.getElementById("mute-btn");
         if (!btn) return;
-        btn.textContent = this.muted ? "🔇" : "🔊";
+        btn.textContent = this.muted ? "\uD83D\uDD07" : "\uD83D\uDD0A";
         btn.classList.toggle("muted", this.muted);
       }
     };
 
-    // First-interaction unlock
     ["click", "touchstart", "keydown"].forEach(evt => {
       document.addEventListener(evt, () => AudioEngine.unlock(), { once: true });
     });
 
-    // Mute button
     document.getElementById("mute-btn").addEventListener("click", (e) => {
       e.stopPropagation();
       AudioEngine.init();
       AudioEngine.toggleMute();
     });
+
+    // ── SW Registration ──
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("./sw.js").catch(() => {});
+    }
   </script>
 </body>
 </html>

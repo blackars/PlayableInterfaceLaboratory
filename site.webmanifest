@@ -1,0 +1,13 @@
+{
+  "name": "Playable Interface Lab",
+  "short_name": "PIL",
+  "description": "Micro Arcade Laboratory — minigames, prototypes, and interactive surfaces.",
+  "start_url": "./",
+  "display": "standalone",
+  "theme_color": "#030303",
+  "background_color": "#030303",
+  "icons": [
+    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

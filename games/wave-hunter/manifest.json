@@ -1,0 +1,14 @@
+﻿{
+    "input":  "microphone",
+    "id":  "wave-hunter",
+    "type":  "game",
+    "description":  "3-lane wave capture game with audio input.",
+    "audio":  true,
+    "status":  "stable",
+    "route":  "./games/wave-hunter/index.html",
+    "title":  "Wave Hunter",
+    "duration":  "3 min",
+    "tags":  [
+                 "game"
+             ]
+}

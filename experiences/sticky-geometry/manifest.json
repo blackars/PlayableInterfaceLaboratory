@@ -1,0 +1,14 @@
+﻿{
+    "input":  "none",
+    "id":  "sticky-geometry",
+    "type":  "experience",
+    "description":  "Sticky CSS geometry sections with labels.",
+    "audio":  false,
+    "status":  "stable",
+    "route":  "./experiences/sticky-geometry/index.html",
+    "title":  "Sticky Geometry",
+    "duration":  "2 min",
+    "tags":  [
+                 "element"
+             ]
+}

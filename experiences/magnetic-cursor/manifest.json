@@ -1,0 +1,15 @@
+﻿{
+    "input":  "mouse",
+    "id":  "magnetic-cursor",
+    "type":  "experience",
+    "description":  "Reactive field with magnetic cursor tracking.",
+    "audio":  false,
+    "status":  "stable",
+    "route":  "./experiences/magnetic-cursor/index.html",
+    "title":  "Magnetic Cursor",
+    "duration":  "1 min",
+    "tags":  [
+                 "experience",
+                 "element"
+             ]
+}

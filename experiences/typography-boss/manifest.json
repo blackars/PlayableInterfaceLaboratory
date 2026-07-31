@@ -1,0 +1,14 @@
+﻿{
+    "input":  "none",
+    "id":  "typography-boss",
+    "type":  "experience",
+    "description":  "Kinetic typography with preset animations.",
+    "audio":  false,
+    "status":  "stable",
+    "route":  "./experiences/typography-boss/index.html",
+    "title":  "Typography Boss",
+    "duration":  "1 min",
+    "tags":  [
+                 "experience"
+             ]
+}

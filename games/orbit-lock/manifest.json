@@ -1,0 +1,14 @@
+﻿{
+    "input":  "keyboard",
+    "id":  "orbit-lock",
+    "type":  "game",
+    "description":  "Precision-timing orbital synchronization puzzle.",
+    "audio":  false,
+    "status":  "stable",
+    "route":  "./games/orbit-lock/index.html",
+    "title":  "Orbit Lock",
+    "duration":  "3 min",
+    "tags":  [
+                 "game"
+             ]
+}

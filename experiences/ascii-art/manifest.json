@@ -1,0 +1,14 @@
+﻿{
+    "input":  "mouse",
+    "id":  "ascii-art",
+    "type":  "experience",
+    "description":  "Text-mask particle system with mouse interaction.",
+    "audio":  false,
+    "status":  "stable",
+    "route":  "./experiences/ascii-art/index.html",
+    "title":  "ASCII Art Effect",
+    "duration":  "2 min",
+    "tags":  [
+                 "experience"
+             ]
+}

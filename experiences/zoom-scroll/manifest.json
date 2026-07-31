@@ -1,0 +1,14 @@
+﻿{
+    "input":  "none",
+    "id":  "zoom-scroll",
+    "type":  "experience",
+    "description":  "Background zoom transitions on scroll.",
+    "audio":  false,
+    "status":  "stable",
+    "route":  "./experiences/zoom-scroll/index.html",
+    "title":  "Zoom Scroll",
+    "duration":  "1 min",
+    "tags":  [
+                 "element"
+             ]
+}

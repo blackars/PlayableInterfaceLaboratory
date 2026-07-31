@@ -1,0 +1,15 @@
+﻿{
+    "input":  "mixed",
+    "id":  "techno-visualizer",
+    "type":  "game",
+    "description":  "Audio-reactive visual engine with presets.",
+    "audio":  true,
+    "status":  "stable",
+    "route":  "./games/techno-visualizer/index.html",
+    "title":  "Techno Visualizer",
+    "duration":  "2 min",
+    "tags":  [
+                 "experience",
+                 "game"
+             ]
+}

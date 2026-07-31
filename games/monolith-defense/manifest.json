@@ -1,0 +1,14 @@
+﻿{
+    "input":  "mouse",
+    "id":  "monolith-defense",
+    "type":  "game",
+    "description":  "Orbital shield defense with tunable parameters.",
+    "audio":  false,
+    "status":  "stable",
+    "route":  "./games/monolith-defense/index.html",
+    "title":  "Monolith Defense",
+    "duration":  "4 min",
+    "tags":  [
+                 "game"
+             ]
+}

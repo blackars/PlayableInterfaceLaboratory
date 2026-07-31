@@ -1,0 +1,14 @@
+﻿{
+    "input":  "none",
+    "id":  "scroll-tunnel",
+    "type":  "experience",
+    "description":  "Infinite depth parallax tunnel on scroll.",
+    "audio":  false,
+    "status":  "stable",
+    "route":  "./experiences/scroll-tunnel/index.html",
+    "title":  "Scroll Tunnel",
+    "duration":  "1 min",
+    "tags":  [
+                 "experience"
+             ]
+}

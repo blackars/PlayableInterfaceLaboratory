@@ -1,0 +1,15 @@
+﻿{
+    "input":  "keyboard",
+    "id":  "mirror-split",
+    "type":  "game",
+    "description":  "Dynamic-axis puzzle with mirror reflections.",
+    "audio":  false,
+    "status":  "stable",
+    "route":  "./games/mirror-split/index.html",
+    "title":  "Mirror Split",
+    "duration":  "3 min",
+    "tags":  [
+                 "game",
+                 "test"
+             ]
+}

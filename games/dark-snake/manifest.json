@@ -1,0 +1,14 @@
+﻿{
+    "input":  "keyboard",
+    "id":  "dark-snake",
+    "type":  "game",
+    "description":  "Cube-fold grid snake game, dark theme.",
+    "audio":  false,
+    "status":  "stable",
+    "route":  "./games/dark-snake/index.html",
+    "title":  "Dark Snake",
+    "duration":  "3 min",
+    "tags":  [
+                 "game"
+             ]
+}

@@ -199,20 +199,67 @@ Each module gets tags displayed as small badges inside its card.
 - [x] Removed dead code: `drawPlaceholders()`, resize handler, canvas data-placeholder
 - [x] Removed `setFilter()` function — logic merged into delegated filter listener
 
+### Phase 8: Dynamic Catalog — Per-Game Manifests (Gap 1)
+- [x] Created `manifest.json` schema: `id, title, description, type, tags, route, input, duration, status, audio`
+- [x] Generated 26 manifests (14 experiences + 12 games)
+- [x] `loadCatalog()` fetches all manifests via `Promise.allSettled`
+- [x] Fallback to `SEED_MODULES` inline array if all fetches fail (offline first visit)
+- [x] Cards consume manifest data (duration badge, status badge, tags)
+
+### Phase 9: Local Progress Tracking (Gap 2)
+- [x] `Progress` store module: `localStorage "hub-progress"`
+- [x] Schema: `{ [route]: { plays, lastPlayed, favorite } }`
+- [x] `trackPlay()`: increments play count + sets lastPlayed on every `openModule()`
+- [x] `toggleFavorite()`: star ☆/★ toggle per card
+- [x] UI: star button on cards, favorites filter button, "LAST PLAYED" badge
+- [x] `hub-muted` key preserved separately
+
+### Phase 10: Embedded Game Overlay (Gap 3)
+- [x] Fullscreen overlay replaces popup: `openModule()` opens iframe in `.game-overlay`
+- [x] Overlay bar: "← HUB" button + game title
+- [x] Closes on button click, ESC key, or Escape
+- [x] `playClose()` sound effect added to AudioEngine
+- [x] Overlay responsive (full viewport on mobile)
+- [x] Fallback to popup if overlay unavailable
+
+### Phase 11: PWA + Mobile (Gap 4)
+- [x] `site.webmanifest`: name, short_name, standalone, theme #030303, icons 192/512
+- [x] `icon-192.png` + `icon-512.png` generated from `favicon.png` (1536x1024 → resize)
+- [x] `sw.js`: version `pil-v1`, precache app shell, stale-while-revalidate for same-origin
+- [x] SW registered from hub `<script>`
+- [x] Apple meta tags: `apple-mobile-web-app-capable`, `apple-touch-icon`, `status-bar-style`
+- [x] Touch detection: `matchMedia('(pointer: coarse)')` → tap opens directly (no hover)
+- [x] Overlay responsive at 720px breakpoint
+- [x] Capacitor documented as future optional phase (requires npm/build)
+
 ## Post-MVP Roadmap (Future Phases)
 
-1. **Search + Filter** (Fuse.js, chip filters)
+1. **Search + Filter** (Fuse.js)
 2. **i18n** (ES/EN selector)
 3. **Systemic design tokens**
-4. **manifest.json per experience**
-5. **Game lifecycle API** (postMessage)
-6. **PWA + Capacitor** mobile
-7. **Backend** (Supabase: auth, progress, favorites)
-8. **Leaderboard + achievements**
+4. **Game lifecycle API** (postMessage, start/pause/resume)
+5. **Backend** (Supabase: auth, progress sync, cloud)
+6. **Leaderboard + achievements**
+7. **Capacitor** mobile wrapper (App Store / Play Store)
 
 ---
 
 ## Changelog
+
+### 2026-07-22 (v4) — Manifest Catalog, Progress, Overlay, PWA
+- Created 26 `manifest.json` files (one per module) with `id, title, description, type, tags, route, input, duration, status, audio`
+- `loadCatalog()` fetches all manifests via `Promise.allSettled`, falls back to inline `SEED_MODULES`
+- Cards now show duration badge and NEW status badge from manifest data
+- `Progress` store: `localStorage "hub-progress"` — tracks plays, lastPlayed, favorites per route
+- Star ☆/★ toggle on each card, "Favorites" filter button, "LAST PLAYED" badge on most recent card
+- Replaced popup with fullscreen overlay for opening games (← HUB button + ESC to close)
+- `playClose()` sound effect added to AudioEngine
+- `site.webmanifest`: PWA installable (standalone, dark theme, icons)
+- `sw.js`: stale-while-revalidate caching, precaches app shell (hub + assets)
+- Generated `icon-192.png` + `icon-512.png` from favicon.png
+- Apple mobile web app meta tags for iOS PWA
+- Touch detection: mobile taps open games directly (no hover preview)
+- 26 `manifest.json` files enable future auto-catalog without build step
 
 ### 2026-07-22 (v3) — Performance Optimization: Iframe on-Hover
 - Replaced 26 live iframes with CSS-only abstract placeholders (0 iframes on load)

@@ -1,0 +1,15 @@
+﻿{
+    "input":  "mouse",
+    "id":  "clip-path",
+    "type":  "experience",
+    "description":  "Dynamic CSS clip-path masking reveal.",
+    "audio":  false,
+    "status":  "stable",
+    "route":  "./experiences/clip-path/index.html",
+    "title":  "Clip-Path Effect",
+    "duration":  "1 min",
+    "tags":  [
+                 "element",
+                 "test"
+             ]
+}

@@ -1,0 +1,14 @@
+﻿{
+    "input":  "keyboard",
+    "id":  "dark-invaders",
+    "type":  "game",
+    "description":  "Space invaders with energy management.",
+    "audio":  false,
+    "status":  "stable",
+    "route":  "./games/dark-invaders/index.html",
+    "title":  "Void Organism",
+    "duration":  "4 min",
+    "tags":  [
+                 "game"
+             ]
+}

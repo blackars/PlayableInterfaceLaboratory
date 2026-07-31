@@ -1,0 +1,14 @@
+﻿{
+    "input":  "none",
+    "id":  "spiral-1",
+    "type":  "experience",
+    "description":  "Procedural generative spiral visualization.",
+    "audio":  false,
+    "status":  "stable",
+    "route":  "./experiences/spiral-1/index.html",
+    "title":  "Spiral 1",
+    "duration":  "1 min",
+    "tags":  [
+                 "experience"
+             ]
+}

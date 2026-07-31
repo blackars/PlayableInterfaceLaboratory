@@ -1,0 +1,14 @@
+﻿{
+    "input":  "none",
+    "id":  "tri-line",
+    "type":  "experience",
+    "description":  "Cinema-minimal generative line composition.",
+    "audio":  false,
+    "status":  "stable",
+    "route":  "./experiences/tri-line/index.html",
+    "title":  "Tri-Line",
+    "duration":  "1 min",
+    "tags":  [
+                 "experience"
+             ]
+}

@@ -1,0 +1,14 @@
+﻿{
+    "input":  "keyboard",
+    "id":  "pacman-darks",
+    "type":  "game",
+    "description":  "Pacman variant with dark aesthetic and AI.",
+    "audio":  false,
+    "status":  "stable",
+    "route":  "./games/pacman-darks/index.html",
+    "title":  "Pacman Darks",
+    "duration":  "4 min",
+    "tags":  [
+                 "game"
+             ]
+}
