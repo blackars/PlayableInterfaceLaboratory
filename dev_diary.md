@@ -246,6 +246,15 @@ Each module gets tags displayed as small badges inside its card.
 
 ## Changelog
 
+### 2026-08-02 (v5) — Static Preview Thumbnails + Tri-Line Reclass
+- Generated 26 real preview screenshots (960x600) via Edge headless (`--virtual-time-budget`)
+- Converted to WebP (quality 82) into `previews/` (~480KB total, 3-113KB each)
+- Cards show color thumbnail at rest (`loading="lazy"`, fade-in via `onload` class)
+- Hover still spawns the live lazy iframe, which fades in over the thumbnail
+- Grayscale filter removed — previews display in full color
+- Tri-Line: tag `experience` → `game`, description → "Cinematic minimal tic-tac-toe"
+- SW cache bumped to `pil-v2`
+
 ### 2026-07-22 (v4) — Manifest Catalog, Progress, Overlay, PWA
 - Created 26 `manifest.json` files (one per module) with `id, title, description, type, tags, route, input, duration, status, audio`
 - `loadCatalog()` fetches all manifests via `Promise.allSettled`, falls back to inline `SEED_MODULES`
