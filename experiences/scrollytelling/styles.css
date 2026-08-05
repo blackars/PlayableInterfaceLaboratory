@@ -60,6 +60,7 @@ body {
 }
 
 .hero-content {
+  margin: auto;
   padding-block: clamp(3rem, 8vh, 6rem);
 }
 
