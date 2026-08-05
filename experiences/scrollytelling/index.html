@@ -7,7 +7,6 @@
   <title>Scrollytelling Demo</title>
 
   <link rel="stylesheet" href="styles.css" />
-<script src="scripts.js"></script>
 </head>
 <body>
 
@@ -30,33 +29,7 @@
       <!-- Visual sticky -->
       <div class="story-visual" aria-hidden="true">
 
-        <div class="visual-layer active" data-scene="0">
-          <img
-            src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2400&q=80"
-            alt=""
-          />
-        </div>
-
-        <div class="visual-layer" data-scene="1">
-          <img
-            src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=2400&q=80"
-            alt=""
-          />
-        </div>
-
-        <div class="visual-layer" data-scene="2">
-          <img
-            src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=2400&q=80"
-            alt=""
-          />
-        </div>
-
-        <div class="visual-layer" data-scene="3">
-          <img
-            src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=2400&q=80"
-            alt=""
-          />
-        </div>
+        <canvas class="particle-field"></canvas>
 
         <div class="visual-overlay"></div>
 
@@ -123,6 +96,6 @@
 
   </main>
 
-  <script src="script.js"></script>
+  <script src="scripts.js"></script>
 </body>
 </html>

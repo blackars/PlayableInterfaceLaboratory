@@ -16,7 +16,7 @@ body {
 
 .page {
   width: 100%;
-  overflow-x: clip;
+  overflow-x: hidden;
 }
 
 .eyebrow {
