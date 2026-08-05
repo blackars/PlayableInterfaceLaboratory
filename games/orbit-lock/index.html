@@ -28,32 +28,27 @@
     }
 
     .app{
-      width:100%;height:100%;
-      display:grid;grid-template-rows:auto 1fr auto;
-      gap:10px;padding:clamp(8px,1.8vw,16px);
+      position:fixed;inset:0;width:100%;height:100%;
+      display:flex;flex-direction:column;justify-content:space-between;
+      gap:10px;padding:clamp(8px,1.8vw,16px);pointer-events:none;z-index:2;
     }
 
     .top{
       display:flex;justify-content:space-between;align-items:flex-start;gap:8px;
+      pointer-events:auto;
     }
     .title{display:grid;gap:4px}
     .eyebrow{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
     h1{font-size:clamp(18px,3.8vw,38px);line-height:.9;letter-spacing:-.05em;font-weight:620}
     .meta{display:flex;gap:8px;flex-wrap:wrap;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#d7d7d7}
 
-    .stage{min-height:0;display:grid;place-items:center;position:relative}
+    .stage{position:fixed;inset:0;z-index:0}
     canvas{
-      width:min(96vw,980px);
-      height:min(70vh,760px);
-      border:1px solid var(--line-soft);
-      background:rgba(255,255,255,.01);
-      image-rendering:high-quality;
+      width:100%;height:100%;display:block;border:none;background:transparent;
     }
 
     .overlay{
-      position:absolute;
-      width:min(96vw,980px);
-      height:min(70vh,760px);
+      position:fixed;inset:0;z-index:1;
       pointer-events:none;
     }
 
@@ -75,7 +70,7 @@
     }
     .message.show{opacity:1}
 
-    .bottom{display:grid;gap:7px}
+    .bottom{display:grid;gap:7px;pointer-events:auto}
     .status{
       display:flex;gap:10px;flex-wrap:wrap;
       font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:#d9d9d9;
@@ -192,8 +187,21 @@
       }
 
       // ---------- Game State ----------
-      const W = canvas.width, H = canvas.height;
-      const CX = W*0.5, CY = H*0.52;
+      let W = canvas.width, H = canvas.height;
+      let CX = W*0.5, CY = H*0.52;
+      let S = 1;
+
+      function resize(){
+        const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+        W = Math.max(320, Math.round(canvas.clientWidth || innerWidth));
+        H = Math.max(240, Math.round(canvas.clientHeight || innerHeight));
+        canvas.width = W * dpr;
+        canvas.height = H * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        CX = W*0.5; CY = H*0.52;
+        S = clamp(Math.min(W / 1100, H / 760), 0.6, 1.3);
+      }
+      addEventListener('resize', resize);
 
       const st = {
         running:true,
@@ -238,9 +246,9 @@
         const ringCount = clamp(1 + Math.floor((level-1)/2), 1, 3); // 1..3
         st.targetSegments = ringCount < 2 ? 2 : 3;
 
-        const baseR = 108;
+        const baseR = 108 * S;
         for(let i=0;i<ringCount;i++){
-          st.rings.push(makeRing(i, baseR + i*56));
+          st.rings.push(makeRing(i, baseR + i*56*S));
         }
 
         // dificultad
@@ -395,15 +403,15 @@
         ctx.strokeStyle = 'rgba(255,255,255,0.12)';
         ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.moveTo(CX-240,CY); ctx.lineTo(CX+240,CY);
-        ctx.moveTo(CX,CY-240); ctx.lineTo(CX,CY+240);
+        ctx.moveTo(CX-240*S,CY); ctx.lineTo(CX+240*S,CY);
+        ctx.moveTo(CX,CY-240*S); ctx.lineTo(CX,CY+240*S);
         ctx.stroke();
 
         // outer scale ticks
         for(let i=0;i<60;i++){
           const a = i/60*TAU;
-          const r1 = 240;
-          const r2 = (i%5===0) ? 254 : 248;
+          const r1 = 240*S;
+          const r2 = (i%5===0) ? 254*S : 248*S;
           const x1 = CX + Math.cos(a)*r1;
           const y1 = CY + Math.sin(a)*r1;
           const x2 = CX + Math.cos(a)*r2;
@@ -415,8 +423,8 @@
         }
 
         // reference marker
-        const rx = CX + Math.cos(st.refAngle) * 268;
-        const ry = CY + Math.sin(st.refAngle) * 268;
+        const rx = CX + Math.cos(st.refAngle) * 268*S;
+        const ry = CY + Math.sin(st.refAngle) * 268*S;
         ctx.fillStyle = '#f1f1f1';
         ctx.beginPath();
         ctx.arc(rx,ry,3.4 + st.pulse*1.5,0,TAU);
@@ -463,7 +471,7 @@
 
       function drawCenterCore(){
         // center core
-        const r = 44 + st.pulse*6;
+        const r = (44 + st.pulse*6) * S;
         const grad = ctx.createRadialGradient(CX,CY,2,CX,CY,r);
         grad.addColorStop(0,'rgba(255,255,255,0.55)');
         grad.addColorStop(1,'rgba(255,255,255,0.08)');
@@ -475,7 +483,7 @@
         ctx.strokeStyle = 'rgba(255,255,255,0.3)';
         ctx.lineWidth = 1.2;
         ctx.beginPath();
-        ctx.arc(CX,CY,62,0,TAU);
+        ctx.arc(CX,CY,62*S,0,TAU);
         ctx.stroke();
 
         // center label
@@ -545,6 +553,7 @@
       resetBtn.addEventListener('click', reset);
 
       // ---------- Start ----------
+      resize();
       reset();
       st.last = performance.now();
       requestAnimationFrame(loop);

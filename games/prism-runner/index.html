@@ -28,32 +28,27 @@
     }
 
     .app{
-      width:100%;height:100%;
-      display:grid;grid-template-rows:auto 1fr auto;
-      gap:10px;padding:clamp(8px,1.8vw,16px);
+      position:fixed;inset:0;width:100%;height:100%;
+      display:flex;flex-direction:column;justify-content:space-between;
+      gap:10px;padding:clamp(8px,1.8vw,16px);pointer-events:none;z-index:2;
     }
 
     .top{
       display:flex;justify-content:space-between;align-items:flex-start;gap:8px;
+      pointer-events:auto;
     }
     .title{display:grid;gap:4px}
     .eyebrow{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
     h1{font-size:clamp(18px,3.8vw,38px);line-height:.9;letter-spacing:-.05em;font-weight:620}
     .meta{display:flex;gap:8px;flex-wrap:wrap;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#d7d7d7}
 
-    .stage{min-height:0;display:grid;place-items:center;position:relative}
+    .stage{position:fixed;inset:0;z-index:0}
     canvas{
-      width:min(96vw,1200px);
-      height:min(72vh,760px);
-      border:1px solid var(--line-soft);
-      background:rgba(255,255,255,.01);
-      image-rendering:high-quality;
+      width:100%;height:100%;display:block;border:none;background:transparent;
     }
 
     .overlay{
-      position:absolute;
-      width:min(96vw,1200px);
-      height:min(72vh,760px);
+      position:fixed;inset:0;z-index:1;
       pointer-events:none;
     }
 
@@ -75,7 +70,7 @@
     }
     .badge.on{opacity:1;transform:translateY(0)}
 
-    .bottom{display:grid;gap:7px}
+    .bottom{display:grid;gap:7px;pointer-events:auto}
     .status{
       display:flex;gap:10px;flex-wrap:wrap;
       font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:#d9d9d9;
@@ -180,12 +175,25 @@
         hit:()=>{ tone(170,.12,'triangle',.04); tone(120,.16,'sine',.03,.08); }
       };
 
-      const W = canvas.width;
-      const H = canvas.height;
-      const CX = W * 0.5;
-      const HORIZON = H * 0.28;
-      const RUNNER_Y = H * 0.82;
+      let W = canvas.width;
+      let H = canvas.height;
+      let CX = W * 0.5;
+      let HORIZON = H * 0.28;
+      let RUNNER_Y = H * 0.82;
       const LANE_W = 150;
+
+      function resize(){
+        const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+        W = Math.max(320, Math.round(canvas.clientWidth || innerWidth));
+        H = Math.max(240, Math.round(canvas.clientHeight || innerHeight));
+        canvas.width = W * dpr;
+        canvas.height = H * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        CX = W * 0.5;
+        HORIZON = H * 0.28;
+        RUNNER_Y = H * 0.82;
+      }
+      addEventListener('resize', resize);
 
       const st = {
         running:true,
@@ -521,6 +529,7 @@
       pauseBtn.addEventListener('click', togglePause);
       resetBtn.addEventListener('click', reset);
 
+      resize();
       reset();
       st.last = performance.now();
       requestAnimationFrame(loop);

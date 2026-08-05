@@ -15,8 +15,9 @@
   const helpModal = document.getElementById("helpModal");
   const closeHelpBtn = document.getElementById("closeHelpBtn");
 
-  const W = 900;
-  const H = 600;
+  let W = 900;
+  let H = 600;
+  let S = 1;
 
   let dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
 
@@ -61,9 +62,15 @@
 
   function setupCanvas() {
     dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+    W = Math.max(320, Math.round(canvas.clientWidth || innerWidth));
+    H = Math.max(240, Math.round(canvas.clientHeight || innerHeight));
     canvas.width = W * dpr;
     canvas.height = H * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    S = clamp(Math.min(W / 900, H / 600), 0.6, 1.3);
+    ball.r = 8 * S;
+    paddle.y = H - 35 * S;
+    ball.y = paddle.y - ball.r - 4;
   }
 
   function clamp(v, min, max) {
@@ -94,14 +101,14 @@
 function createMolecules() {
   molecules = [];
 
-  const cols = 8; 
+  const cols = 8;
   const rows = Math.min(3 + game.level, 6);
-  const gapX = 76;
-  const gapY = 46;
-  const moleculeRadius = 24;
+  const gapX = 76 * S;
+  const gapY = 46 * S;
+  const moleculeRadius = 24 * S;
 
   const startX = (W - (cols - 1) * gapX) / 2;
-  const startY = 58;
+  const startY = Math.max(48 * S, H * 0.09);
 
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {
@@ -128,7 +135,7 @@ function createMolecules() {
 
     const angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.48;
 
-    ball.speed = 6.35 + game.level * 0.35;
+    ball.speed = (6.35 + game.level * 0.35) * S;
     ball.vx = Math.cos(angle) * ball.speed;
     ball.vy = Math.sin(angle) * ball.speed;
 
@@ -142,8 +149,8 @@ function createMolecules() {
     game.level = 1;
     game.combo = 1;
 
-    paddle.w = 168;
-    paddle.h = 15;
+    paddle.w = 168 * S;
+    paddle.h = 15 * S;
     paddle.x = W / 2 - paddle.w / 2;
     paddle.targetX = paddle.x;
 
@@ -157,8 +164,8 @@ function createMolecules() {
     game.level++;
     game.combo = 1;
 
-    paddle.w = Math.max(122, 168 - (game.level - 1) * 8);
-    paddle.h = 15;
+    paddle.w = Math.max(122, 168 - (game.level - 1) * 8) * S;
+    paddle.h = 15 * S;
     paddle.x = W / 2 - paddle.w / 2;
     paddle.targetX = paddle.x;
 
@@ -285,10 +292,10 @@ function createMolecules() {
 
   function hitPaddle() {
     const paddleHitbox = {
-      x: paddle.x - 12,
-      y: paddle.y - 6,
-      w: paddle.w + 24,
-      h: paddle.h + 14
+      x: paddle.x - 12 * S,
+      y: paddle.y - 6 * S,
+      w: paddle.w + 24 * S,
+      h: paddle.h + 14 * S
     };
 
     if (!circleRectCollision(ball.x, ball.y, ball.r, paddleHitbox)) return;
@@ -300,7 +307,7 @@ function createMolecules() {
 
     const angle = -Math.PI / 2 + relative * 0.95;
 
-    ball.speed = Math.min(11.5, ball.speed + 0.06);
+    ball.speed = Math.min(11.5 * S, ball.speed + 0.06 * S);
     ball.vx = Math.cos(angle) * ball.speed;
     ball.vy = Math.sin(angle) * ball.speed;
 
@@ -339,7 +346,7 @@ function createMolecules() {
           addFloatingText(mol.x, mol.y, "+" + gained);
           spawnParticles(mol.x, mol.y, "#fff", 24, 1.1);
 
-          ball.speed = Math.min(11.5, ball.speed + 0.03);
+          ball.speed = Math.min(11.5 * S, ball.speed + 0.03 * S);
 
           const len = Math.hypot(ball.vx, ball.vy) || 1;
 
