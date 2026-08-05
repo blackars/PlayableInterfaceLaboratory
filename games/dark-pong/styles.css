@@ -114,9 +114,13 @@ body::after {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 0;
+  padding: 12px 16px;
   user-select: none;
   pointer-events: auto;
+  background: rgba(255,255,255,.03);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,.08);
 }
 
 h1 {

@@ -29,14 +29,15 @@
     }
     .top{
       display:flex; gap:10px; align-items:center;
-      padding:10px 12px; border-bottom:1px solid var(--line);
-      background:linear-gradient(to bottom, #0a0a0a, #080808);
+      padding:12px 14px; border-bottom:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.03);
+      backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
     }
     .chip{
-      border:1px solid #222; color:#ddd; background:#0e0e0e;
+      border:1px solid #222; color:#ddd; background:rgba(255,255,255,.02);
       padding:6px 10px; font-size:12px; letter-spacing:.08em;
       text-transform:uppercase; cursor:pointer; user-select:none;
-      transition:.2s ease; border-radius:999px;
+      transition:.2s ease; border-radius:0;
     }
     .chip:hover{border-color:#3a3a3a;background:#121212}
     .chip.active{background:#161616;border-color:#5a5a5a;color:#fff}

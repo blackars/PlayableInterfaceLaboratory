@@ -35,6 +35,10 @@
 
     .top{
       display:flex;justify-content:space-between;align-items:flex-start;gap:8px;
+      padding:14px 18px;
+      background:rgba(255,255,255,.03);
+      backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+      border:1px solid rgba(255,255,255,.08);
       pointer-events:auto;
     }
     .title{display:grid;gap:4px}
@@ -290,7 +294,7 @@
         else if(keys.has('arrowright') || keys.has('d')) st.laneTarget = 1;
         else st.laneTarget = 0;
 
-        st.lane += (st.laneTarget - st.lane) * Math.min(1, dt * 12);
+        st.lane += (st.laneTarget - st.lane) * Math.min(1, dt * 18);
 
         // Dash
         if(st.dashCd > 0) st.dashCd -= dt;
@@ -316,13 +320,14 @@
 
         // Obstacles movement/collision
         const flow = 0.55 * (1 + st.speed*0.55);
+        const curLane = Math.round(st.lane);
         for(let i=st.obstacles.length-1;i>=0;i--){
           const o = st.obstacles[i];
           o.z -= flow * dt;
           o.rot += dt * (o.type==='prism' ? 1.2 : 0.8);
 
           if(!o.nearDone && o.z < 0.3 && o.z > 0.2){
-            const laneDiff = Math.abs(st.laneTarget - o.lane);
+            const laneDiff = Math.abs(curLane - o.lane);
             if(laneDiff === 1){
               o.nearDone = true;
               st.combo = Math.min(9, st.combo+1);
@@ -333,7 +338,7 @@
           }
 
           if(o.z <= 0.16){
-            const hit = (o.lane === st.laneTarget);
+            const hit = (o.lane === curLane);
             if(hit && !st.dash){
               st.over = true;
               st.running = false;

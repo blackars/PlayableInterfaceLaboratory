@@ -880,6 +880,7 @@
       const title = document.getElementById("overlay-title");
       title.textContent = mod ? mod.title : "";
       frame.src = route + (route.includes("?") ? "&" : "?") + "hubFullscreen=1";
+      frame.addEventListener("load", () => { try { frame.focus(); } catch (err) {} }, { once: true });
       overlay.classList.add("active");
       document.body.style.overflow = "hidden";
       AudioEngine.playOpen();

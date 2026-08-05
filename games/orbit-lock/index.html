@@ -35,6 +35,10 @@
 
     .top{
       display:flex;justify-content:space-between;align-items:flex-start;gap:8px;
+      padding:14px 18px;
+      background:rgba(255,255,255,.03);
+      backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+      border:1px solid rgba(255,255,255,.08);
       pointer-events:auto;
     }
     .title{display:grid;gap:4px}
@@ -244,7 +248,7 @@
       function buildLevel(level){
         st.rings = [];
         const ringCount = clamp(1 + Math.floor((level-1)/2), 1, 3); // 1..3
-        st.targetSegments = ringCount < 2 ? 2 : 3;
+        st.targetSegments = Math.min(ringCount, 3); // all rings aligned
 
         const baseR = 108 * S;
         for(let i=0;i<ringCount;i++){
