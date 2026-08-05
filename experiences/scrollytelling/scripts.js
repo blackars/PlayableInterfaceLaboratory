@@ -22,31 +22,46 @@ function setActiveStep(index) {
 }
 
 /*
-  IntersectionObserver detecta cuál step está en la zona activa.
-  rootMargin ajusta esa zona.
-
-  "-45% 0px -45% 0px" significa:
-  solo una franja central del viewport dispara el cambio.
+  Detección de sección activa por scroll:
+  se elige el step cuyo centro está más cerca del centro del viewport.
+  Es determinista y no depende de umbrales de IntersectionObserver.
 */
 
-const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const index = Number(entry.target.dataset.step);
-        setActiveStep(index);
-      }
+let ticking = false;
+
+function pickActiveStep() {
+  const center = window.innerHeight / 2;
+  let best = 0;
+  let bestDist = Infinity;
+
+  steps.forEach((step, i) => {
+    const rect = step.getBoundingClientRect();
+    const stepCenter = rect.top + rect.height / 2;
+    const distance = Math.abs(stepCenter - center);
+
+    if (distance < bestDist) {
+      bestDist = distance;
+      best = i;
+    }
+  });
+
+  setActiveStep(best);
+}
+
+function onScroll() {
+  if (!ticking) {
+    ticking = true;
+    requestAnimationFrame(() => {
+      pickActiveStep();
+      ticking = false;
     });
-  },
-  {
-    threshold: 0.2,
-    rootMargin: "-45% 0px -45% 0px"
   }
-);
+}
 
-steps.forEach((step) => observer.observe(step));
+window.addEventListener("scroll", onScroll, { passive: true });
+window.addEventListener("resize", onScroll);
 
-setActiveStep(0);
+pickActiveStep();
 
 /* ------------------------- */
 /* CAMPO DE PARTÍCULAS       */
@@ -62,21 +77,21 @@ const ctx = canvas ? canvas.getContext("2d") : null;
 */
 
 const SCENES = [
-  { speed: 16, angle: -Math.PI / 2 }, // 01 / rise
-  { speed: 26, angle: 0 },            // 02 / drift right
-  { speed: 38, angle: -Math.PI / 3 }, // 03 / diagonal, faster
-  { speed: 11, angle: Math.PI / 2 }   // 04 / fall, slow
+  { speed: 22, angle: -Math.PI / 2 }, // 01 / rise
+  { speed: 36, angle: 0 },            // 02 / drift right
+  { speed: 52, angle: -Math.PI / 3 }, // 03 / diagonal, faster
+  { speed: 15, angle: Math.PI / 2 }   // 04 / fall, slow
 ];
 
-const COUNT = 170;
+const COUNT = 220;
 
 const particles = Array.from({ length: COUNT }, () => ({
   x: Math.random(),
   y: Math.random(),
-  r: 0.6 + Math.random() * 1.8,
-  a: 0.18 + Math.random() * 0.5,
+  r: 0.8 + Math.random() * 2.2,
+  a: 0.28 + Math.random() * 0.55,
   phase: Math.random() * Math.PI * 2,
-  jitter: 0.4 + Math.random() * 1.4
+  jitter: 0.5 + Math.random() * 1.6
 }));
 
 let W = 0;
@@ -89,8 +104,15 @@ function resize() {
   if (!canvas) return;
 
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
-  W = canvas.clientWidth;
-  H = canvas.clientHeight;
+
+  /*
+    La escena sticky ocupa siempre el viewport completo.
+    Usar dimensiones de ventana evita que clientWidth sea 0
+    (un 0 convertiría las posiciones en NaN y el fondo quedaría negro).
+  */
+  W = window.innerWidth;
+  H = window.innerHeight;
+
   canvas.width = Math.round(W * dpr);
   canvas.height = Math.round(H * dpr);
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -118,6 +140,11 @@ let last = performance.now();
 
 function draw(time) {
   if (!ctx) return;
+
+  if (W <= 0 || H <= 0) {
+    requestAnimationFrame(draw);
+    return;
+  }
 
   const dt = Math.min((time - last) / 1000, 0.05);
   last = time;
