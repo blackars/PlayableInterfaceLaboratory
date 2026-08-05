@@ -6,7 +6,7 @@
     "audio":  false,
     "status":  "stable",
     "route":  "./games/dark-snake/index.html",
-    "title":  "Dark Snake",
+    "title":  "Snake",
     "duration":  "3 min",
     "tags":  [
                  "game"
