@@ -11,7 +11,9 @@ html {
   -ms-overflow-style: none;
 }
 
-html::-webkit-scrollbar {
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
   width: 0;
   height: 0;
 }
@@ -21,11 +23,6 @@ body {
   background: #050505;
   color: #f4f4f4;
   overflow-x: hidden;
-}
-
-body::-webkit-scrollbar {
-  width: 0;
-  height: 0;
 }
 
 .page {

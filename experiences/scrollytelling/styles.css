@@ -68,9 +68,24 @@ body {
   margin-top: 1rem;
   font-size: clamp(2.5rem, 8.5vw, 8.5rem);
   line-height: 0.9;
-  letter-spacing: -0.04em;
   font-weight: 900;
   max-width: 100%;
+}
+
+.hero h1 {
+  /*
+    La caja se ajusta exacto al texto y se centra con margin auto.
+    El letter-spacing negativo en una caja del ancho del viewport
+    desplaza los glifos ~0.02em a la derecha; al usar width:max-content
+    y un tracking menor, el título queda visualmente centrado.
+  */
+  width: max-content;
+  margin-inline: auto;
+  letter-spacing: -0.02em;
+}
+
+.outro h2 {
+  letter-spacing: -0.04em;
 }
 
 .hero p:not(.eyebrow) {
