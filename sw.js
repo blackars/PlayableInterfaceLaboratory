@@ -1,4 +1,4 @@
-const CACHE = "pil-v2";
+const CACHE = "pil-v3";
 const SHELL = [
   "./",
   "./index.html",
