@@ -28,7 +28,6 @@ experiences/                  Visual prototypes and interactive demos
   spiral-1/                   Generative spiral visualization
   spiral-2/                   Spiral variant with controls
   sticky-geometry/            Sticky CSS geometry sections
-  tri-line/                   Cinema-minimal line composition
   typography-boss/            Kinetic typography presets
   zoom-scroll/                Background zoom on scroll
 games/                        Playable minigames
@@ -43,6 +42,7 @@ games/                        Playable minigames
   subatomic-collider/         Particle collision simulator
   dark-invaders/              Space invaders with energy
   techno-visualizer/          Audio-reactive visual engine
+  tri-line/                   Cinema-minimal line composition
   wave-hunter/                3-lane wave capture game
 ```
 

@@ -1,11 +1,11 @@
 ﻿{
     "input":  "none",
     "id":  "tri-line",
-    "type":  "experience",
+    "type":  "game",
     "description":  "Cinematic minimal tic-tac-toe — 5 rounds, optional bot, 3 audio tones.",
     "audio":  false,
     "status":  "stable",
-    "route":  "./experiences/tri-line/index.html",
+    "route":  "./games/tri-line/index.html",
     "title":  "Tri-Line",
     "duration":  "1 min",
     "tags":  [
