@@ -1,12 +1,12 @@
 ﻿{
     "input":  "keyboard",
-    "id":  "pacman-darks",
+    "id":  "pacman",
     "type":  "game",
-    "description":  "Pacman variant with dark aesthetic and AI.",
+    "description":  "Classic PACMAN maze chase with a dark aesthetic and AI ghosts.",
     "audio":  false,
     "status":  "stable",
-    "route":  "./games/pacman-darks/index.html",
-    "title":  "Pacman Darks",
+    "route":  "./games/pacman/index.html",
+    "title":  "PACMAN",
     "duration":  "4 min",
     "tags":  [
                  "game"

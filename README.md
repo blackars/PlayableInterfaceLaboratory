@@ -36,7 +36,7 @@ games/                        Playable minigames
   mirror-split/               Dynamic-axis mirror puzzle
   monolith-defense/           Orbital shield defense
   orbit-lock/                 Precision timing puzzle
-  pacman-darks/               Dark pacman variant
+  pacman/                     Classic PACMAN maze chase
   prism-runner/               Endless prism runner
   dark-pong/                  Organic breaker
   subatomic-collider/         Particle collision simulator

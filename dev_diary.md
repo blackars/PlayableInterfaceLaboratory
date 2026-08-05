@@ -42,7 +42,7 @@
 | EXP-11 | MirrorSplit | Visual FX |
 | EXP-12 | Monolith Defense | Game |
 | EXP-13 | OrbitLock | Puzzle/physics |
-| EXP-14 | PacmanDarks | Game |
+| EXP-14 | PACMAN | Game |
 | EXP-15 | PrismRunner | Game |
 | EXP-16 | ScrollTunnel | Scroll experiment |
 | EXP-17 | Tri-Line | Generative art |
@@ -119,7 +119,7 @@ Each module gets tags displayed as small badges inside its card.
 | Mirror Split | `game`, `test` |
 | Monolith Defense | `game` |
 | Orbit Lock | `game` |
-| Pacman Darks | `game` |
+| PACMAN | `game` |
 | Prism Runner | `game` |
 | Dark Pong | `game` |
 | Subatomic Collider | `game`, `experience` |

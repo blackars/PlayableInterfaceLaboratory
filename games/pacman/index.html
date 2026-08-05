@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pacman Refractor v2.1</title>
+  <title>PACMAN</title>
   <style>
     :root{
       --bg:#030303;
@@ -200,11 +200,9 @@
       to{transform:translateY(-50%) rotate(22deg)}
     }
 
-    @media (max-width:1200px){ :root{ --cell:min(3.4vw,24px); } }
     @media (max-width:900px){
       .top{display:grid}
       .meta{justify-content:flex-start}
-      :root{ --cell:min(3.6vw,22px); }
     }
   </style>
 </head>
@@ -212,8 +210,8 @@
   <div class="app">
     <header class="top">
       <div class="title">
-        <div class="eyebrow">Pacman Refractor v2.1</div>
-        <h1>Refractor</h1>
+        <div class="eyebrow">Arcade Classic</div>
+        <h1>PACMAN</h1>
       </div>
       <div class="meta">
         <span>3 lives</span><span>·</span>
@@ -408,8 +406,35 @@
       const key=(x,y)=>`${x},${y}`;
       const inside=(x,y)=>x>=0&&y>=0&&x<COLS&&y<ROWS;
       const isWall=(x,y)=>!inside(x,y)||st.walls.has(key(x,y));
-      const px=c=>c*26+13; // cell fixed to CSS var base (26)
       const dist=(ax,ay,bx,by)=>Math.hypot(ax-bx,ay-by);
+
+      let cellPx = 26;
+      function layoutCell(){
+        const stageEl = document.querySelector('.stage');
+        if(!stageEl) return;
+        const availW = Math.max(1, stageEl.clientWidth - 2);
+        const availH = Math.max(1, stageEl.clientHeight - 2);
+        cellPx = Math.max(12, Math.min(26, Math.floor(availW/COLS), Math.floor(availH/ROWS)));
+        document.documentElement.style.setProperty('--cell', cellPx + 'px');
+      }
+      function repositionAll(){
+        for(const [k,el] of st.wallEls){
+          const [x,y]=k.split(',').map(Number);
+          el.style.left=`${x*cellPx}px`; el.style.top=`${y*cellPx}px`;
+        }
+        for(const [k,el] of st.dotEls){
+          const [x,y]=k.split(',').map(Number);
+          el.style.left=`${x*cellPx + cellPx/2}px`; el.style.top=`${y*cellPx + cellPx/2}px`;
+        }
+        if(st.player){
+          st.player.el.style.left=`${st.player.x*cellPx + cellPx/2}px`;
+          st.player.el.style.top =`${st.player.y*cellPx + cellPx/2}px`;
+        }
+        for(const g of st.ghosts){
+          g.el.style.left=`${g.x*cellPx + cellPx/2}px`;
+          g.el.style.top =`${g.y*cellPx + cellPx/2}px`;
+        }
+      }
 
       function setMessage(text, show=true){
         messageEl.textContent=text;
@@ -438,7 +463,7 @@
           const [x,y]=k.split(',').map(Number);
           const el=document.createElement('div');
           el.className='wall';
-          el.style.left=`${x*26}px`; el.style.top=`${y*26}px`;
+          el.style.left=`${x*cellPx}px`; el.style.top=`${y*cellPx}px`;
           mazeLayer.appendChild(el);
           st.wallEls.set(k,el);
         }
@@ -452,7 +477,7 @@
             const [x,y]=k.split(',').map(Number);
             const el=document.createElement('div');
             el.className='wall';
-            el.style.left=`${x*26}px`; el.style.top=`${y*26}px`;
+            el.style.left=`${x*cellPx}px`; el.style.top=`${y*cellPx}px`;
             el.style.opacity='0';
             mazeLayer.appendChild(el);
             st.wallEls.set(k,el);
@@ -516,8 +541,8 @@
               const el=document.createElement('div');
               el.className='dot';
               el.dataset.k=key(x,y);
-              el.style.left=`${x*26+13}px`;
-              el.style.top=`${y*26+13}px`;
+              el.style.left=`${x*cellPx + cellPx/2}px`;
+              el.style.top=`${y*cellPx + cellPx/2}px`;
               dotLayer.appendChild(el);
               st.dotEls.set(key(x,y),el);
             }
@@ -572,14 +597,14 @@
       }
 
       function placePlayerInstant(){
-        st.player.el.style.left=`${st.player.x*26+13}px`;
-        st.player.el.style.top =`${st.player.y*26+13}px`;
+        st.player.el.style.left=`${st.player.x*cellPx + cellPx/2}px`;
+        st.player.el.style.top =`${st.player.y*cellPx + cellPx/2}px`;
         rotatePlayer();
       }
 
       function placeGhostInstant(g){
-        g.el.style.left=`${g.x*26+13}px`;
-        g.el.style.top =`${g.y*26+13}px`;
+        g.el.style.left=`${g.x*cellPx + cellPx/2}px`;
+        g.el.style.top =`${g.y*cellPx + cellPx/2}px`;
       }
 
       function rotatePlayer(){
@@ -672,8 +697,8 @@
           if(ix>=COLS) ix-=COLS;
           if(ix<0) ix+=COLS;
 
-          p.el.style.left=`${ix*26+13}px`;
-          p.el.style.top =`${iy*26+13}px`;
+          p.el.style.left=`${ix*cellPx + cellPx/2}px`;
+          p.el.style.top =`${iy*cellPx + cellPx/2}px`;
 
           if(t>=1){
             p.x=p.to.x; p.y=p.to.y;
@@ -753,8 +778,8 @@
           if(ix>=COLS) ix-=COLS;
           if(ix<0) ix+=COLS;
 
-          g.el.style.left=`${ix*26+13}px`;
-          g.el.style.top =`${iy*26+13}px`;
+          g.el.style.left=`${ix*cellPx + cellPx/2}px`;
+          g.el.style.top =`${iy*cellPx + cellPx/2}px`;
 
           if(t>=1){
             g.x=g.to.x; g.y=g.to.y;
@@ -903,7 +928,7 @@
       function winLevel(){
         st.won=true; st.running=false;
         stateLabel.textContent='Nivel completado';
-        setMessage('Refractor Clear', true);
+        setMessage('Level Clear', true);
         sfx.win();
       }
 
@@ -993,8 +1018,10 @@
 
       pauseBtn.addEventListener('click', togglePause);
       resetBtn.addEventListener('click', resetAll);
+      addEventListener('resize', ()=>{ layoutCell(); repositionAll(); });
 
       // Boot
+      layoutCell();
       resetAll();
       st.last=performance.now();
       requestAnimationFrame(loop);
