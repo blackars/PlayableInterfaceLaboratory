@@ -124,23 +124,6 @@
       white-space:pre;
     }
 
-    .game{
-      position:absolute;
-      right:28px;
-      bottom:24px;
-      text-align:right;
-      font-size:10px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      color:#bcbcbc;
-      line-height:1.8;
-    }
-    .hint{
-      opacity:.6;
-      font-size:9px;
-      letter-spacing:.1em;
-    }
-
     .vignette{
       position:fixed;
       inset:0;
@@ -199,17 +182,11 @@ SECTOR: 00
 DEPTH: 0000
 SPIN: 0.00
     </div>
-
-    <div class="game" id="gameInfo">
-ALIGN MODE: OFF
-SCORE: 0000
-<div class="hint">Press [G] to toggle mini‑game</div>
-    </div>
   </div>
 
   <div class="vignette"></div>
   <div class="grain"></div>
-  <div class="legend">Scroll to travel · Mouse to align · G mini-game</div>
+  <div class="legend">Scroll to travel</div>
 
   <script>
     (() => {
@@ -217,7 +194,6 @@ SCORE: 0000
       const ctx = canvas.getContext('2d');
       const bar = document.getElementById('bar');
       const statusEl = document.getElementById('status');
-      const gameInfo = document.getElementById('gameInfo');
 
       let w = 0, h = 0, cx = 0, cy = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
 
@@ -227,13 +203,7 @@ SCORE: 0000
         targetNorm: 0,
         t: 0,
         spin: 0,
-        sections: 8,
-        mouseX: 0,
-        mouseY: 0,
-        gameOn: false,
-        score: 0,
-        best: 0,
-        alignError: 0
+        sections: 8
       };
 
       const tunnelDepth = 160;
@@ -415,18 +385,6 @@ SCORE: 0000
           drawRing(rings[i], travel, sec, state.spin);
         }
 
-        // mini-game obstacle (alignment)
-        const obstacleA = state.t * 0.8 + travel * 1.35;
-        const obstacleR = Math.min(w,h) * 0.17;
-        const ox = cx + Math.cos(obstacleA) * obstacleR;
-        const oy = cy + Math.sin(obstacleA*1.23) * obstacleR * 0.64;
-
-        ctx.strokeStyle = "rgba(230,230,230,0.35)";
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.arc(ox, oy, 12, 0, Math.PI*2);
-        ctx.stroke();
-
         // thin grid
         ctx.strokeStyle = "rgba(255,255,255,0.06)";
         ctx.beginPath();
@@ -434,56 +392,19 @@ SCORE: 0000
         ctx.moveTo(0,cy); ctx.lineTo(w,cy);
         ctx.stroke();
 
-        // mini-game: keep mouse near the center
-        const dx = state.mouseX - cx;
-        const dy = state.mouseY - cy;
-        const distCenter = Math.hypot(dx,dy);
-        state.alignError = distCenter;
-
-        if(state.gameOn){
-          const ok = distCenter < 42;
-          state.score += ok ? 1 : -1;
-          if(state.score < 0) state.score = 0;
-          state.best = Math.max(state.best, state.score);
-
-          // feedback visual
-          ctx.strokeStyle = ok ? "rgba(245,245,245,0.65)" : "rgba(180,180,180,0.38)";
-          ctx.lineWidth = ok ? 1.8 : 1;
-          ctx.beginPath();
-          ctx.arc(cx,cy,38,0,Math.PI*2);
-          ctx.stroke();
-        }
-
         bar.style.width = `${(state.targetNorm*100).toFixed(2)}%`;
         statusEl.textContent =
 `SECTOR: ${String(sec).padStart(2,'0')}
 DEPTH: ${String(Math.floor(travel*100)).padStart(4,'0')}
 SPIN: ${state.spin.toFixed(2)}`;
 
-        gameInfo.innerHTML =
-`ALIGN MODE: ${state.gameOn ? 'ON' : 'OFF'}
-SCORE: ${String(state.score).padStart(4,'0')}  BEST: ${String(state.best).padStart(4,'0')}
-<div class="hint">Press [G] to toggle mini‑game</div>`;
-
         requestAnimationFrame(render);
       }
 
       window.addEventListener('resize', resize);
-      window.addEventListener('mousemove', (e)=>{
-        state.mouseX = e.clientX;
-        state.mouseY = e.clientY;
-      });
-
-      window.addEventListener('keydown', (e)=>{
-        if(e.key.toLowerCase() === 'g'){
-          state.gameOn = !state.gameOn;
-        }
-      });
 
       resize();
       buildTunnel();
-      state.mouseX = cx;
-      state.mouseY = cy;
       render();
     })();
   </script>
