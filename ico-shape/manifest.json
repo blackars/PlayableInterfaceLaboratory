@@ -1,0 +1,14 @@
+{
+    "input":  "none",
+    "id":  "ico-shape",
+    "type":  "element",
+    "description":  "Wireframe icosahedron with self-drawing edges, rotating in a loop.",
+    "audio":  false,
+    "status":  "stable",
+    "route":  "./ico-shape/index.html",
+    "title":  "Ico Shape",
+    "duration":  "loop",
+    "tags":  [
+                 "element"
+             ]
+}
