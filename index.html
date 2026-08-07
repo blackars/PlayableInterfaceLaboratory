@@ -143,15 +143,12 @@
     }
 
     h1 {
-      font-size: clamp(1.5rem, 2.8vw, 2.3rem);
-      line-height: 0.98;
-      letter-spacing: -0.02em;
+      max-width: 980px;
+      font-size: clamp(3.2rem, 10vw, 10rem);
+      line-height: 0.84;
+      letter-spacing: -0.095em;
       font-weight: 800;
       text-transform: uppercase;
-    }
-
-    h1 span {
-      display: block;
     }
 
     .description {
@@ -184,85 +181,6 @@
     }
 
     .description strong { color: var(--white); font-weight: 600; }
-
-    /* ── Icosahedron hero shape ── */
-    .hero-ico {
-      display: grid;
-      place-items: center;
-    }
-
-    .hero-side {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 20px;
-      min-width: 0;
-    }
-
-    .ico-wrap {
-      position: relative;
-      width: min(100%, 380px);
-      aspect-ratio: 1 / 1;
-    }
-
-    .ico-wrap::before {
-      content: "";
-      position: absolute;
-      inset: 12%;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,255,255,0.06), transparent 70%);
-      pointer-events: none;
-    }
-
-    .ico-wrap svg {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      display: block;
-      overflow: visible;
-    }
-
-    .ico-shape .wob {
-      transform-box: fill-box;
-      transform-origin: center;
-      animation: ico-wob 9s ease-in-out infinite;
-    }
-
-    .ico-shape .spin {
-      transform-box: fill-box;
-      transform-origin: center;
-      animation: ico-spin 18s linear infinite;
-    }
-
-    .ico-shape .edge {
-      fill: none;
-      stroke: #eaf2ff;
-      stroke-width: 2.4;
-      stroke-linecap: round;
-      filter: drop-shadow(0 0 4px rgba(170, 210, 255, 0.85));
-      stroke-dasharray: var(--len);
-      stroke-dashoffset: var(--len);
-      animation: ico-draw 6s ease-in-out infinite;
-      animation-delay: var(--d);
-    }
-
-    @keyframes ico-spin {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
-
-    @keyframes ico-wob {
-      0%, 100% { transform: scale(1, 1); }
-      50%      { transform: scale(0.92, 1.04); }
-    }
-
-    @keyframes ico-draw {
-      0%   { stroke-dashoffset: var(--len); }
-      45%  { stroke-dashoffset: 0; }
-      50%  { stroke-dashoffset: 0; }
-      95%  { stroke-dashoffset: var(--len); }
-      100% { stroke-dashoffset: var(--len); }
-    }
 
     .section-head {
       display: flex;
@@ -721,7 +639,6 @@
 
     @media (max-width: 1100px) {
       .hero { grid-template-columns: 1fr; gap: 28px; }
-      .ico-wrap { width: min(100%, 300px); }
       .description { max-width: 760px; }
       .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
@@ -729,7 +646,7 @@
     @media (max-width: 720px) {
       .page { width: min(100% - 28px, 1480px); padding-top: 28px; }
       .topbar, .section-head, .footer { align-items: flex-start; flex-direction: column; }
-      .ico-wrap { width: min(100%, 240px); }
+      h1 { font-size: clamp(3.1rem, 18vw, 5.8rem); }
       .grid { grid-template-columns: 1fr; }
       .game-card { min-height: auto; }
     }
@@ -750,51 +667,11 @@
     </header>
 
     <section class="hero" aria-labelledby="main-title">
-      <div class="hero-ico">
-        <div class="ico-wrap">
-          <svg class="ico-shape" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-            <g class="wob">
-              <g class="spin">
-                <path class="edge" d="M 312.99 493.47 L 312.99 158.9" style="--len: 334.57px; --d: 0s" />
-                <path class="edge" d="M 312.99 493.47 L 565.51 655.85" style="--len: 300.22px; --d: 0.2s" />
-                <path class="edge" d="M 312.99 493.47 L 234.49 685.49" style="--len: 207.45px; --d: 0.4s" />
-                <path class="edge" d="M 312.99 493.47 L 614.02 330.4" style="--len: 342.36px; --d: 0.6s" />
-                <path class="edge" d="M 312.99 493.47 L 78.43 378.36" style="--len: 261.28px; --d: 0.8s" />
-                <path class="edge" d="M 312.99 158.9 L 565.51 114.51" style="--len: 256.39px; --d: 1s" />
-                <path class="edge" d="M 312.99 158.9 L 234.49 144.15" style="--len: 79.87px; --d: 1.2s" />
-                <path class="edge" d="M 312.99 158.9 L 614.02 330.4" style="--len: 346.46px; --d: 1.4s" />
-                <path class="edge" d="M 312.99 158.9 L 78.43 378.36" style="--len: 321.22px; --d: 1.6s" />
-                <path class="edge" d="M 487.01 641.1 L 487.01 306.53" style="--len: 334.57px; --d: 1.8s" />
-                <path class="edge" d="M 487.01 641.1 L 565.51 655.85" style="--len: 79.87px; --d: 2s" />
-                <path class="edge" d="M 487.01 641.1 L 234.49 685.49" style="--len: 256.39px; --d: 2.2s" />
-                <path class="edge" d="M 487.01 641.1 L 721.57 421.64" style="--len: 321.22px; --d: 2.4s" />
-                <path class="edge" d="M 487.01 641.1 L 185.98 469.6" style="--len: 346.46px; --d: 2.6s" />
-                <path class="edge" d="M 487.01 306.53 L 565.51 114.51" style="--len: 207.45px; --d: 2.8s" />
-                <path class="edge" d="M 487.01 306.53 L 234.49 144.15" style="--len: 300.22px; --d: 3s" />
-                <path class="edge" d="M 487.01 306.53 L 721.57 421.64" style="--len: 261.28px; --d: 3.2s" />
-                <path class="edge" d="M 487.01 306.53 L 185.98 469.6" style="--len: 342.36px; --d: 3.4s" />
-                <path class="edge" d="M 565.51 655.85 L 234.49 685.49" style="--len: 332.34px; --d: 3.6s" />
-                <path class="edge" d="M 565.51 655.85 L 614.02 330.4" style="--len: 329.05px; --d: 3.8s" />
-                <path class="edge" d="M 565.51 655.85 L 721.57 421.64" style="--len: 281.44px; --d: 4s" />
-                <path class="edge" d="M 234.49 685.49 L 78.43 378.36" style="--len: 344.5px; --d: 4.2s" />
-                <path class="edge" d="M 234.49 685.49 L 185.98 469.6" style="--len: 221.27px; --d: 4.4s" />
-                <path class="edge" d="M 565.51 114.51 L 234.49 144.15" style="--len: 332.34px; --d: 4.6s" />
-                <path class="edge" d="M 565.51 114.51 L 614.02 330.4" style="--len: 221.27px; --d: 4.8s" />
-                <path class="edge" d="M 565.51 114.51 L 721.57 421.64" style="--len: 344.5px; --d: 5s" />
-                <path class="edge" d="M 234.49 144.15 L 78.43 378.36" style="--len: 281.44px; --d: 5.2s" />
-                <path class="edge" d="M 234.49 144.15 L 185.98 469.6" style="--len: 329.05px; --d: 5.4s" />
-                <path class="edge" d="M 614.02 330.4 L 721.57 421.64" style="--len: 141.04px; --d: 5.6s" />
-                <path class="edge" d="M 78.43 378.36 L 185.98 469.6" style="--len: 141.04px; --d: 5.8s" />
-              </g>
-            </g>
-          </svg>
-        </div>
-      </div>
-      <div class="hero-side">
+      <div>
         <p class="eyebrow">Interactive Interface Laboratory</p>
-        <h1 id="main-title"><span>Playable</span><span>Interface</span><span>Lab</span></h1>
-        <p class="description" id="typewriter"></p>
+        <h1 id="main-title">Playable Interface Lab</h1>
       </div>
+      <p class="description" id="typewriter"></p>
     </section>
 
     <section aria-labelledby="games-title">
@@ -841,6 +718,7 @@
       { title: "Sticky Geometry", description: "Sticky CSS geometry sections with labels.", route: "./experiences/sticky-geometry/index.html", tags: ["element"] },
       { title: "Snake", description: "Cube-fold grid snake game, dark theme.", route: "./games/dark-snake/index.html", tags: ["game"] },
       { title: "Gravity Dots", description: "Physics-based particle gravity toy.", route: "./games/gravity-dots/index.html", tags: ["game"] },
+      { title: "Ico Shape", description: "Wireframe icosahedron with self-drawing edges, rotating in a loop.", route: "./ico-shape/index.html", tags: ["element"] },
       { title: "Mirror Split", description: "Dynamic-axis puzzle with mirror reflections.", route: "./games/mirror-split/index.html", tags: ["game", "test"] },
       { title: "Monolith Defense", description: "Orbital shield defense with tunable parameters.", route: "./games/monolith-defense/index.html", tags: ["game"] },
       { title: "Orbit Lock", description: "Precision-timing orbital synchronization puzzle.", route: "./games/orbit-lock/index.html", tags: ["game"] },
@@ -1146,11 +1024,7 @@
 
     setTimeout(() => {
       const el = document.getElementById('typewriter');
-      if (!el) return;
-      el.innerHTML = TYPEWRITER_TEXT;
-      el.style.minHeight = el.offsetHeight + 'px';
-      el.innerHTML = '';
-      typewrite(el, TYPEWRITER_TEXT, 38);
+      if (el) typewrite(el, TYPEWRITER_TEXT, 38);
     }, 600);
 
     // ── Audio Engine ──
