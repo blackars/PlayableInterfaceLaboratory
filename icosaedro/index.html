@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Icosaedro animado</title>
+<style>
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: radial-gradient(ellipse at 50% 50%, #0a0d14 0%, #000000 75%);
+    overflow: hidden;
+  }
+  svg {
+    width: 100vw;
+    height: 100vh;
+    display: block;
+  }
+  .wob {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: wob 9s ease-in-out infinite;
+  }
+  .spin {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: spin 18s linear infinite;
+  }
+  .edge {
+    fill: none;
+    stroke: #eaf2ff;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 4px rgba(170, 210, 255, 0.85));
+    stroke-dasharray: var(--len);
+    stroke-dashoffset: var(--len);
+    animation: draw 6s ease-in-out infinite;
+    animation-delay: var(--d);
+  }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  @keyframes wob {
+    0%, 100% { transform: scale(1, 1); }
+    50%      { transform: scale(0.92, 1.04); }
+  }
+  @keyframes draw {
+    0%   { stroke-dashoffset: var(--len); }
+    45%  { stroke-dashoffset: 0; }
+    50%  { stroke-dashoffset: 0; }
+    95%  { stroke-dashoffset: var(--len); }
+    100% { stroke-dashoffset: var(--len); }
+  }
+</style>
+</head>
+<body>
+<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+  <g class="wob">
+    <g class="spin">
+      <path class="edge" d="M 312.99 493.47 L 312.99 158.9" style="--len: 334.57px; --d: 0s" />
+      <path class="edge" d="M 312.99 493.47 L 565.51 655.85" style="--len: 300.22px; --d: 0.2s" />
+      <path class="edge" d="M 312.99 493.47 L 234.49 685.49" style="--len: 207.45px; --d: 0.4s" />
+      <path class="edge" d="M 312.99 493.47 L 614.02 330.4" style="--len: 342.36px; --d: 0.6s" />
+      <path class="edge" d="M 312.99 493.47 L 78.43 378.36" style="--len: 261.28px; --d: 0.8s" />
+      <path class="edge" d="M 312.99 158.9 L 565.51 114.51" style="--len: 256.39px; --d: 1s" />
+      <path class="edge" d="M 312.99 158.9 L 234.49 144.15" style="--len: 79.87px; --d: 1.2s" />
+      <path class="edge" d="M 312.99 158.9 L 614.02 330.4" style="--len: 346.46px; --d: 1.4s" />
+      <path class="edge" d="M 312.99 158.9 L 78.43 378.36" style="--len: 321.22px; --d: 1.6s" />
+      <path class="edge" d="M 487.01 641.1 L 487.01 306.53" style="--len: 334.57px; --d: 1.8s" />
+      <path class="edge" d="M 487.01 641.1 L 565.51 655.85" style="--len: 79.87px; --d: 2s" />
+      <path class="edge" d="M 487.01 641.1 L 234.49 685.49" style="--len: 256.39px; --d: 2.2s" />
+      <path class="edge" d="M 487.01 641.1 L 721.57 421.64" style="--len: 321.22px; --d: 2.4s" />
+      <path class="edge" d="M 487.01 641.1 L 185.98 469.6" style="--len: 346.46px; --d: 2.6s" />
+      <path class="edge" d="M 487.01 306.53 L 565.51 114.51" style="--len: 207.45px; --d: 2.8s" />
+      <path class="edge" d="M 487.01 306.53 L 234.49 144.15" style="--len: 300.22px; --d: 3s" />
+      <path class="edge" d="M 487.01 306.53 L 721.57 421.64" style="--len: 261.28px; --d: 3.2s" />
+      <path class="edge" d="M 487.01 306.53 L 185.98 469.6" style="--len: 342.36px; --d: 3.4s" />
+      <path class="edge" d="M 565.51 655.85 L 234.49 685.49" style="--len: 332.34px; --d: 3.6s" />
+      <path class="edge" d="M 565.51 655.85 L 614.02 330.4" style="--len: 329.05px; --d: 3.8s" />
+      <path class="edge" d="M 565.51 655.85 L 721.57 421.64" style="--len: 281.44px; --d: 4s" />
+      <path class="edge" d="M 234.49 685.49 L 78.43 378.36" style="--len: 344.5px; --d: 4.2s" />
+      <path class="edge" d="M 234.49 685.49 L 185.98 469.6" style="--len: 221.27px; --d: 4.4s" />
+      <path class="edge" d="M 565.51 114.51 L 234.49 144.15" style="--len: 332.34px; --d: 4.6s" />
+      <path class="edge" d="M 565.51 114.51 L 614.02 330.4" style="--len: 221.27px; --d: 4.8s" />
+      <path class="edge" d="M 565.51 114.51 L 721.57 421.64" style="--len: 344.5px; --d: 5s" />
+      <path class="edge" d="M 234.49 144.15 L 78.43 378.36" style="--len: 281.44px; --d: 5.2s" />
+      <path class="edge" d="M 234.49 144.15 L 185.98 469.6" style="--len: 329.05px; --d: 5.4s" />
+      <path class="edge" d="M 614.02 330.4 L 721.57 421.64" style="--len: 141.04px; --d: 5.6s" />
+      <path class="edge" d="M 78.43 378.36 L 185.98 469.6" style="--len: 141.04px; --d: 5.8s" />
+    </g>
+  </g>
+</svg>
+</body>
+</html>
