@@ -186,14 +186,14 @@
     .hero-side {
       display: flex;
       flex-direction: column;
-      align-items: flex-end;
+      align-items: center;
       gap: 20px;
       min-width: 0;
     }
 
     .ico-wrap {
       position: relative;
-      width: min(100%, 330px);
+      width: min(100%, 165px);
       aspect-ratio: 1 / 1;
     }
 
@@ -713,8 +713,7 @@
 
     @media (max-width: 1100px) {
       .hero { grid-template-columns: 1fr; gap: 28px; }
-      .hero-side { align-items: flex-start; }
-      .ico-wrap { width: min(100%, 260px); }
+      .ico-wrap { width: min(100%, 130px); }
       .description { max-width: 760px; }
       .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
@@ -723,8 +722,7 @@
       .page { width: min(100% - 28px, 1480px); padding-top: 28px; }
       .topbar, .section-head, .footer { align-items: flex-start; flex-direction: column; }
       h1 { font-size: clamp(3.1rem, 18vw, 5.8rem); }
-      .hero-side { align-items: center; }
-      .ico-wrap { width: min(100%, 220px); }
+      .ico-wrap { width: min(100%, 110px); }
       .grid { grid-template-columns: 1fr; }
       .game-card { min-height: auto; }
     }
