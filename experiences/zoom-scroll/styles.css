@@ -75,6 +75,8 @@ body {
   /*
     Importante:
     Más altura = más recorrido para ver el zoom.
+    El fondo de imagen cubre toda la sección para que
+    nunca aparezca un vacío entre imágenes.
   */
   height: 220vh;
   background: #050505;
@@ -91,12 +93,11 @@ body {
   isolation: isolate;
 }
 
-/* Imagen de fondo animada */
+/* Imagen de fondo: cubre la sección completa (220vh) */
 
 .zoom-bg {
   position: absolute;
   inset: 0;
-  z-index: -2;
   overflow: hidden;
   background: #111;
 }
