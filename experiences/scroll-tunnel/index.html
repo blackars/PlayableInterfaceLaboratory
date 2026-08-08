@@ -25,6 +25,16 @@
       overflow-x:hidden;
       cursor:crosshair;
     }
+    /* El viaje necesita scroll real, pero sin barra visible */
+    html{
+      scrollbar-width:none;
+      -ms-overflow-style:none;
+    }
+    html::-webkit-scrollbar{
+      width:0;
+      height:0;
+      display:none;
+    }
 
     /* Scroll largo para “viaje” */
     body{

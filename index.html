@@ -875,7 +875,21 @@
       const title = document.getElementById("overlay-title");
       title.textContent = mod ? mod.title : "";
       frame.src = route + (route.includes("?") ? "&" : "?") + "hubFullscreen=1";
-      frame.addEventListener("load", () => { try { frame.focus(); } catch (err) {} }, { once: true });
+      frame.addEventListener("load", () => {
+        try {
+          // Red de seguridad global: ningún módulo muestra scrollbar dentro del hub
+          const doc = frame.contentDocument;
+          if (doc && doc.head) {
+            const s = doc.createElement("style");
+            s.textContent =
+              "html{scrollbar-width:none;-ms-overflow-style:none}" +
+              "html::-webkit-scrollbar{width:0;height:0;display:none}" +
+              "body{overflow-x:hidden}";
+            doc.head.appendChild(s);
+          }
+          frame.focus();
+        } catch (err) {}
+      }, { once: true });
       overlay.classList.add("active");
       document.body.style.overflow = "hidden";
       AudioEngine.playOpen();
