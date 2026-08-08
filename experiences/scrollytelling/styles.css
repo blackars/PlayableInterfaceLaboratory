@@ -56,7 +56,7 @@ body {
 
 .hero-content,
 .outro > div {
-  width: min(1100px, 100%);
+  width: 100%;
 }
 
 .hero h1,
@@ -70,14 +70,10 @@ body {
 
 .hero h1 {
   /*
-    La caja se ajusta exacto al texto y se centra con margin auto.
-    El letter-spacing negativo en una caja del ancho del viewport
-    desplaza los glifos ~0.02em a la derecha; al usar width:max-content
-    y un tracking menor, el título queda visualmente centrado.
+    El título se centra con text-align heredado de .hero.
+    Sin width:max-content ni márgenes automáticos:
+    la caja ocupa el 100% del viewport y el texto queda centrado.
   */
-  width: max-content;
-  margin-inline: auto;
-  letter-spacing: -0.02em;
 }
 
 .outro h2 {
