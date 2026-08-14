@@ -913,8 +913,41 @@
     });
 
     // ── Iframe on hover ──
+    const WEBP_COVERS = {
+      "experiences/ascii-art": "webp/ascii-art-effect.webp",
+      "experiences/ascii-glitch-mirror": "webp/ascii-glitch-effect.webp",
+      "experiences/circle-typography": "webp/circle-typography.webp",
+      "experiences/spiral-1": "webp/spiral1.webp",
+      "experiences/spiral-2": "webp/spiral2.webp",
+      "experiences/magnetic-cursor": "webp/chiquitos/magnetic-cursor.webp",
+      "experiences/scroll-tunnel": "webp/scroll-tunnel.webp",
+      "experiences/typography-boss": "webp/typography-boss.webp",
+      "experiences/clip-path": "webp/clip-path.webp",
+      "experiences/zoom-scroll": "webp/zoom-to-scroll.webp",
+      "experiences/parallax-gradient": "webp/parallax-gradient.webp",
+      "experiences/scrollytelling": "webp/scrollytelling.webp",
+      "experiences/sticky-geometry": "webp/sticky-geometry.webp",
+      "games/tri-line": "webp/triline.webp",
+      "games/dark-snake": "webp/snake.webp",
+      "games/gravity-dots": "webp/gravity-dots.webp",
+      "ico-shape": "webp/icosaedro.webp",
+      "games/mirror-split": "webp/mirror-split.webp",
+      "games/monolith-defense": "webp/monolith-defense.webp",
+      "games/orbit-lock": "webp/orbit-lock.webp",
+      "games/pacman": "webp/pacman.webp",
+      "games/prism-runner": "webp/prism-runner.webp",
+      "games/dark-pong": "webp/organic-breaker.webp",
+      "games/subatomic-collider": "webp/subatomic-collider.webp",
+      "games/dark-invaders": "webp/void-organism.webp",
+      "games/techno-visualizer": "webp/techno-visualizer.webp",
+      "games/wave-hunter": "webp/wave-hunter.webp"
+    };
+
     function previewPath(route) {
-      return "./previews/" + route.replace("./", "").replace("/index.html", "").replace("/", "-") + ".webp";
+      const key = route.replace("./", "").replace("/index.html", "");
+      const cover = WEBP_COVERS[key];
+      if (cover) return "./" + cover;
+      return "./previews/" + key.replace("/", "-") + ".webp";
     }
 
     function insertIframe(card) {
